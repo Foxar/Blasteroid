@@ -3,8 +3,13 @@
 
 void setRects()
 {
-    shipRects[0] = sf::IntRect(70, 149, 36, 49);
-    shipRects[1] = sf::IntRect(30, 149, 36, 49);
+    shipRects[0][0] = sf::IntRect(70, 149, 36, 49);
+    shipRects[1][0] = sf::IntRect(30, 149, 36, 49);
+    shipRects[0][1] = sf::IntRect(278, 176, 28, 33);
+    shipRects[1][1] = sf::IntRect(233, 176, 28, 37);
+    shipRects[0][2];
+    shipRects[1][2];
+
 
     astRects[0] = sf::IntRect(4, 105, 17, 17);
     astRects[1] = sf::IntRect(28, 106, 13, 15);
@@ -28,19 +33,45 @@ void setRects()
     astRects[19] = sf::IntRect(98, 2, 54, 47);
     astRects[20] = sf::IntRect(174, 6, 71, 52);
 
-    muzzleRects[0][0] = sf::IntRect(4, 202, 36, 46);
-    muzzleRects[1][0] = sf::IntRect(42, 202, 36, 46);
-    muzzleRects[2][0] = sf::IntRect(79, 202, 36, 46);
-    muzzleRects[3][0] = sf::IntRect(116, 202, 36, 46);
-    muzzleRects[4][0] = sf::IntRect(153, 202, 36, 46);
 
-    muzzleRects[0][1] = sf::IntRect(4, 251, 36, 50);
-    muzzleRects[1][1] = sf::IntRect(42, 251, 36, 50);
-    muzzleRects[2][1] = sf::IntRect(79, 251, 36, 50);
-    muzzleRects[3][1] = sf::IntRect(116, 251, 36, 50);
-    muzzleRects[4][1] = sf::IntRect(153, 251, 36, 50);
 
-    laser[0] = sf::IntRect(152, 173, 6, 13);
+    shipShootRects[0][0][0] = sf::IntRect(4, 202, 36, 46);    //SHIP=1 ENGINE=OFF FRAME=1
+    shipShootRects[0][1][0] = sf::IntRect(4, 251, 36, 50);    //SHIP=1 ENGINE=ON FRAME=1
+    shipShootRects[0][0][1] = sf::IntRect(42, 202, 36, 46);    //SHIP=1 ENGINE=OFF FRAME=2
+    shipShootRects[0][1][1] = sf::IntRect(42, 251, 36, 50);    //SHIP=1 ENGINE=ON FRAME=2
+    shipShootRects[0][0][2] = sf::IntRect(79, 202, 36, 46);    //SHIP=1 ENGINE=OFF FRAME=3
+    shipShootRects[0][1][2] = sf::IntRect(79, 251, 36, 50);    //SHIP=1 ENGINE=ON FRAME=3
+    shipShootRects[0][0][3] = sf::IntRect(116, 202, 36, 46);    //SHIP=1 ENGINE=OFF FRAME=4
+    shipShootRects[0][1][3] = sf::IntRect(116, 251, 36, 50);    //SHIP=1 ENGINE=ON FRAME=4
+    shipShootRects[0][0][4] = sf::IntRect(153, 202, 36, 46);    //SHIP=1 ENGINE=OFF FRAME=5
+    shipShootRects[0][1][4] = sf::IntRect(153, 251, 36, 50);    //SHIP=1 ENGINE=ON FRAME=5
+
+    shipShootRects[1][0][0] = sf::IntRect(233, 176, 28, 37);    //SHIP=2 ENGINE=OFF FRAME=1
+    shipShootRects[1][1][0] = sf::IntRect(232, 220, 32, 41);    //SHIP=2 ENGINE=ON FRAME=1
+    shipShootRects[1][0][1] = sf::IntRect(278, 176, 28, 33);    //SHIP=2 ENGINE=OFF FRAME=2
+    shipShootRects[1][1][1] = sf::IntRect(272, 221, 40, 40);    //SHIP=2 ENGINE=ON FRAME=2
+    shipShootRects[1][0][2] = sf::IntRect(314, 264, 36, 37);    //SHIP=2 ENGINE=OFF FRAME=3
+    shipShootRects[1][1][2] = sf::IntRect(315, 220, 36, 41);    //SHIP=2 ENGINE=ON FRAME=3
+    shipShootRects[1][0][3] = sf::IntRect(361, 264, 30, 37);    //SHIP=2 ENGINE=OFF FRAME=4
+    shipShootRects[1][1][3] = sf::IntRect(362, 220, 30, 41);    //SHIP=2 ENGINE=ON FRAME=4
+    shipShootRects[1][0][4] = sf::IntRect(405, 264, 28, 37);    //SHIP=2 ENGINE=OFF FRAME=5
+    shipShootRects[1][1][4] = sf::IntRect(406, 220, 28, 41);    //SHIP=2 ENGINE=ON FRAME=5
+
+    shipShootRects[2][0][0] = sf::IntRect();    //SHIP=3 ENGINE=OFF FRAME=1
+    shipShootRects[2][1][0] = sf::IntRect();    //SHIP=3 ENGINE=ON FRAME=1
+    shipShootRects[2][0][1] = sf::IntRect();    //SHIP=3 ENGINE=OFF FRAME=2
+    shipShootRects[2][1][1] = sf::IntRect();    //SHIP=3 ENGINE=ON FRAME=2
+    shipShootRects[2][0][2] = sf::IntRect();    //SHIP=3 ENGINE=OFF FRAME=3
+    shipShootRects[2][1][2] = sf::IntRect();    //SHIP=3 ENGINE=ON FRAME=3
+    shipShootRects[2][0][3] = sf::IntRect();    //SHIP=3 ENGINE=OFF FRAME=4
+    shipShootRects[2][1][3] = sf::IntRect();    //SHIP=3 ENGINE=ON FRAME=4
+    shipShootRects[2][0][4] = sf::IntRect();    //SHIP=3 ENGINE=OFF FRAME=5
+    shipShootRects[2][1][4] = sf::IntRect();    //SHIP=3 ENGINE=ON FRAME=5
+
+
+
+
+    plasma[0] = sf::IntRect(152, 173, 6, 13);
 
 }
 

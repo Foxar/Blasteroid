@@ -5,13 +5,16 @@
 #include <iostream>
 
 
-player::player(int hp, int x, int y, sf::Texture texture, int rect)
+player::player(int hp, int x, int y, sf::Texture texture, int shipType)
 {
     this->health = hp;
     this->sprite.setPosition(x, y);
     this->tex = texture;
     this->sprite.setTexture(this->tex);
-    this->sprite.setTextureRect(shipRects[rect]);
+    this->shipType = shipType;
+
+    this->sprite.setTextureRect(shipRects[0][this->shipType - 1]);
+
     this->sprite.setOrigin(this->sprite.getLocalBounds().width/2,
                            this->sprite.getLocalBounds().height/2);
     this->accel = 0;

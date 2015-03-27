@@ -4,9 +4,20 @@
 #define GLOBAL_H_INCLUDED
 
 sf::IntRect astRects[21];
-sf::IntRect shipRects[2];
-sf::IntRect muzzleRects[5][2];
-sf::IntRect laser[1];
+
+sf::IntRect shipRects[2][3];
+
+sf::IntRect AshipRects[2];
+sf::IntRect BshipRects[2];
+sf::IntRect CshipRects[2];
+
+sf::IntRect shipShootRects[5][2][3];
+
+sf::IntRect AshipShootRects[5][2];
+sf::IntRect BshipShootRects[5][2];
+sf::IntRect CshipShootRects[5][2];
+
+sf::IntRect plasma[1];
 
 std::vector<bullet>bulletList;
 

@@ -6,7 +6,7 @@
 class player
 {
     public:
-        player(int hp, int xPos, int yPos, sf::Texture texture, int rect);
+        player(int hp, int xPos, int yPos, sf::Texture texture, int shipType);
         void shoot(sf::Texture texture, int angle);
         sf::Texture tex;
         sf::Sprite sprite;
@@ -17,6 +17,7 @@ class player
         int health;
         int muzzleFrame;
         bool isAccelerating;
+        int shipType;
 };
 
 #endif // PLAYER_H

@@ -17,6 +17,10 @@
 //DIFFERENT ATTACKS
 //RANDOM ASTEROIDS
 //ASTEROIDS EXPLOSIONS
+//
+//
+//
+//IMPORTANT!!! DIFFERENT SHIP RECTS USE
 
 
 
@@ -49,23 +53,25 @@ int main()
     spreadtex.setSmooth(true);
 
     //CREATE OBJECTS
-    player pObj(100, 50, 50, spreadtex, 0);
+    player pObj(100, 50, 50, spreadtex, 2);
     asteroid ast1(3, 100, 100, spreadtex);
 
 
     while(app.isOpen())
     {
+
             //RESET POBJ MEMBERS
             pObj.accel = 0;
             pObj.isAccelerating = false;
-            pObj.sprite.setTextureRect(shipRects[0]);
+            pObj.sprite.setTextureRect(shipRects[0][pObj.shipType - 1]);
+            pObj.sprite.setOrigin(pObj.sprite.getLocalBounds().width/2, pObj.sprite.getLocalBounds().height/2);
             pObj.vel.x = getMovement(pObj.sprite.getRotation()).x;
             pObj.vel.y = getMovement(pObj.sprite.getRotation()).y;
 
             if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && pObj.speed >= 0)
             {
                 pObj.accel = -0.2;
-                pObj.sprite.setTextureRect(shipRects[0]);
+                pObj.sprite.setTextureRect(shipRects[0][pObj.shipType - 1]);
                 if(pObj.speed == 0)
                 {
                     pObj.accel = 0;
@@ -78,7 +84,7 @@ int main()
                 {
                     pObj.accel = 0.2;
                 }
-                pObj.sprite.setTextureRect(shipRects[1]);
+                pObj.sprite.setTextureRect(shipRects[1][pObj.shipType - 1]);
                 pObj.isAccelerating = true;
             }
             if(!sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -118,12 +124,13 @@ int main()
         {
             if(pObj.isAccelerating)
             {
-                pObj.sprite.setTextureRect(muzzleRects[pObj.muzzleFrame][1]);
+                pObj.sprite.setTextureRect(shipShootRects[pObj.shipType - 1][1][pObj.muzzleFrame]);
             }
             else
             {
-                pObj.sprite.setTextureRect(muzzleRects[pObj.muzzleFrame][0]);
+                pObj.sprite.setTextureRect(shipShootRects[pObj.shipType - 1][0][pObj.muzzleFrame]);
             }
+            pObj.sprite.setOrigin(pObj.sprite.getLocalBounds().width/2, pObj.sprite.getLocalBounds().height/2);
             pObj.muzzleFrame++;
             if(pObj.muzzleFrame >= 5)
             {
