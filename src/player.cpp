@@ -4,16 +4,19 @@
 #include "listController.h"
 #include <iostream>
 
+player::player()
+{
 
-player::player(int hp, int x, int y, sf::Texture texture, int shipType)
+}
+
+player::player(int hp, int x, int y, sf::Texture texture)
 {
     this->health = hp;
     this->sprite.setPosition(x, y);
     this->tex = texture;
     this->sprite.setTexture(this->tex);
-    this->shipType = shipType;
 
-    this->sprite.setTextureRect(shipRects[0][this->shipType - 1]);
+    this->sprite.setTextureRect(shipRects[0]);
 
     this->sprite.setOrigin(this->sprite.getLocalBounds().width/2,
                            this->sprite.getLocalBounds().height/2);
@@ -24,16 +27,56 @@ player::player(int hp, int x, int y, sf::Texture texture, int shipType)
 
 void player::shoot(sf::Texture texture, int angle)
 {
+    float dx, dy;
+
+    float a1, a2, b1, b2;
 
 
-std::cout << "SHIT:" << this->vel.x << std::endl;
-    bullet newBullet(this->sprite.getPosition().x + this->vel.x * 20,
-                     this->sprite.getPosition().y + -this->vel.y * 20,
+    bullet newBullet(this->sprite.getPosition().x + this->vel.x * 15,
+                     this->sprite.getPosition().y + -this->vel.y * 15,
                      this->vel.x,
                      this->vel.y,
                      texture,
                      10 + this->speed,
                      angle);
 
+    sf::Vector2f A(this->sprite.getPosition().x, this->sprite.getPosition().y);
+    sf::Vector2f B(this->sprite.getPosition().x + this->vel.x, this->sprite.getPosition().y + (-this->vel.y));
+
+    dx = B.x - A.x;
+    dy = B.y - A.y;
+
+    a1 = B.x - dy / 2;
+    b1 = B.y + dx / 2;
+    a2 = B.x + dy / 2;
+    b2 = B.y - dx / 2;
+
+    newBullet.sprite.move((a2 - a1) * 11, (b2 - b1) * 11);
+
     bulletList.push_back(newBullet);
+
+    bullet newBullet2(this->sprite.getPosition().x + this->vel.x * 15,
+                     this->sprite.getPosition().y + -this->vel.y * 15,
+                     this->vel.x,
+                     this->vel.y,
+                     texture,
+                     10 + this->speed,
+                     angle);
+
+    A = sf::Vector2f(this->sprite.getPosition().x, this->sprite.getPosition().y);
+    B = sf::Vector2f(this->sprite.getPosition().x + this->vel.x, this->sprite.getPosition().y + (-this->vel.y));
+
+    dx = B.x - A.x;
+    dy = B.y - A.y;
+
+    a1 = B.x - dy / 2;
+    b1 = B.y + dx / 2;
+    a2 = B.x + dy / 2;
+    b2 = B.y - dx / 2;
+
+    newBullet2.sprite.move(-(a2 - a1) * 11, -(b2 - b1) * 11);
+
+
+    bulletList.push_back(newBullet2);
+
 }

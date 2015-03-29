@@ -17,7 +17,6 @@
 //DIFFERENT ATTACKS
 //RANDOM ASTEROIDS
 //ASTEROIDS EXPLOSIONS
-//MOVE THE BULLET ORIGING TO THE GUNS AND MAKE 2ND SHIP SHOOT 2 PLASMA BULLETS
 //
 //
 //IMPORTANT!!! DIFFERENT SHIP RECTS USE
@@ -35,10 +34,13 @@ int gameState = 0;
 
 bool LMB = false;
 
+sf::RenderWindow app;
+
 int main()
 {
     //WINDOW CREATION
     sf::RenderWindow app(sf::VideoMode(800, 600, 32), "Blasteroid");
+    app.setVerticalSyncEnabled(true);
     //FRAMERATE CAP
     app.setFramerateLimit(60);
     //RAND SEED
@@ -53,7 +55,7 @@ int main()
     spreadtex.setSmooth(true);
 
     //CREATE OBJECTS
-    player pObj(100, 50, 50, spreadtex, 2);
+    player pObj(100, 50, 50, spreadtex);
     asteroid ast1(3, 100, 100, spreadtex);
 
 
@@ -63,15 +65,15 @@ int main()
             //RESET POBJ MEMBERS
             pObj.accel = 0;
             pObj.isAccelerating = false;
-            pObj.sprite.setTextureRect(shipRects[0][pObj.shipType - 1]);
-            pObj.sprite.setOrigin(pObj.sprite.getLocalBounds().width/2, pObj.sprite.getLocalBounds().height/2);
+            pObj.sprite.setTextureRect(shipRects[0]);
+            pObj.sprite.setOrigin(pObj.sprite.getTextureRect().width/2, pObj.sprite.getTextureRect().height/2);
             pObj.vel.x = getMovement(pObj.sprite.getRotation()).x;
             pObj.vel.y = getMovement(pObj.sprite.getRotation()).y;
 
             if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && pObj.speed >= 0)
             {
                 pObj.accel = -0.2;
-                pObj.sprite.setTextureRect(shipRects[0][pObj.shipType - 1]);
+                pObj.sprite.setTextureRect(shipRects[0]);
                 if(pObj.speed == 0)
                 {
                     pObj.accel = 0;
@@ -84,12 +86,13 @@ int main()
                 {
                     pObj.accel = 0.2;
                 }
-                pObj.sprite.setTextureRect(shipRects[1][pObj.shipType - 1]);
+                pObj.sprite.setTextureRect(shipRects[1]);
                 pObj.isAccelerating = true;
             }
             if(!sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 LMB = false;
+
             }
 
         //CALCULATING DIRECTION OF MOVING
@@ -120,19 +123,19 @@ int main()
         }
 
         //ANIMATIONS
-        if(pObj.muzzleFrame > 0 && pObj.muzzleFrame < 5)
+        if(pObj.muzzleFrame > 0 && pObj.muzzleFrame < 6)
         {
             if(pObj.isAccelerating)
             {
-                pObj.sprite.setTextureRect(shipShootRects[pObj.shipType - 1][1][pObj.muzzleFrame]);
+                pObj.sprite.setTextureRect(playerShipShootRects[1][pObj.muzzleFrame - 1]);
             }
             else
             {
-                pObj.sprite.setTextureRect(shipShootRects[pObj.shipType - 1][0][pObj.muzzleFrame]);
+                pObj.sprite.setTextureRect(playerShipShootRects[0][pObj.muzzleFrame - 1]);
             }
-            pObj.sprite.setOrigin(pObj.sprite.getLocalBounds().width/2, pObj.sprite.getLocalBounds().height/2);
+            pObj.sprite.setOrigin(pObj.sprite.getTextureRect().width/2, pObj.sprite.getTextureRect().height/2);
             pObj.muzzleFrame++;
-            if(pObj.muzzleFrame >= 5)
+            if(pObj.muzzleFrame >= 6)
             {
                 pObj.muzzleFrame = 0;
             }
@@ -178,6 +181,12 @@ int main()
             {
                 bulletList.erase(bulletList.begin() + i);
             }
+        }
+
+        //KEEP BULLETS TURNED CORRECT WAY
+        for(int i = 0; i < bulletList.size(); i++)
+        {
+            bulletList[i].sprite.setRotation(getAngle(bulletList[i].vel.x, bulletList[i].vel.y) - 90);
         }
 
         //SPEED

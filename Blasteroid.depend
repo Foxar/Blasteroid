@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1427486991 source:f:\programming (new)\projects\blasteroid\main.cpp
+1427633249 source:f:\programming (new)\projects\blasteroid\main.cpp
 	<SFML/Graphics.hpp>
 	"global.h"
 	"player.h"
@@ -10,46 +10,46 @@
 	<windows.h>
 	<cmath>
 
-1427484234 f:\programming (new)\projects\blasteroid\include\player.h
+1427633280 f:\programming (new)\projects\blasteroid\include\player.h
 	<SFML/Graphics.hpp>
 
-1427204645 f:\programming (new)\projects\blasteroid\include\asteroid.h
+1427208245 f:\programming (new)\projects\blasteroid\include\asteroid.h
 	<SFML/Graphics.hpp>
 
 1426707606 f:\programming (new)\projects\blasteroid\src\rectcontroller.cpp
 	<SFML/Graphics.hpp>
 	"rectController.h"
 
-1427485192 f:\programming (new)\projects\blasteroid\include\rectcontroller.h
+1427549980 f:\programming (new)\projects\blasteroid\include\rectcontroller.h
 	<SFML/Graphics.hpp>
 
-1427231933 source:f:\programming (new)\projects\blasteroid\src\asteroid.cpp
+1427235533 source:f:\programming (new)\projects\blasteroid\src\asteroid.cpp
 	"asteroid.h"
 	"rectController.h"
 
-1427486773 source:f:\programming (new)\projects\blasteroid\src\player.cpp
+1427633304 source:f:\programming (new)\projects\blasteroid\src\player.cpp
 	"player.h"
 	"rectController.h"
 	"bullet.h"
 	"listController.h"
 	<iostream>
 
-1427487675 source:f:\programming (new)\projects\blasteroid\src\rectcontroller.cpp
+1427628782 source:f:\programming (new)\projects\blasteroid\src\rectcontroller.cpp
 	<SFML/Graphics.hpp>
 	"rectController.h"
 
-1427485159 f:\programming (new)\projects\blasteroid\include\global.h
+1427550649 f:\programming (new)\projects\blasteroid\include\global.h
 	<SFML/Graphics.hpp>
 	"bullet.h"
 
-1427484049 source:f:\programming (new)\projects\blasteroid\src\bullet.cpp
+1427632162 source:f:\programming (new)\projects\blasteroid\src\bullet.cpp
 	"bullet.h"
 	"rectController.h"
 	<iostream>
 
-1427403783 f:\programming (new)\projects\blasteroid\include\bullet.h
+1427407383 f:\programming (new)\projects\blasteroid\include\bullet.h
 	<SFML/Graphics.hpp>
 
-1427205132 f:\programming (new)\projects\blasteroid\include\listcontroller.h
+1427208732 f:\programming (new)\projects\blasteroid\include\listcontroller.h
 	"bullet.h"
 

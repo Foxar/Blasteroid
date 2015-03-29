@@ -3,12 +3,8 @@
 
 void setRects()
 {
-    shipRects[0][0] = sf::IntRect(70, 149, 36, 49);
-    shipRects[1][0] = sf::IntRect(30, 149, 36, 49);
-    shipRects[0][1] = sf::IntRect(278, 176, 28, 33);
-    shipRects[1][1] = sf::IntRect(233, 176, 28, 37);
-    shipRects[0][2];
-    shipRects[1][2];
+    shipRects[0] = sf::IntRect(278, 176, 28, 33);
+    shipRects[1] = sf::IntRect(233, 176, 28, 37);
 
 
     astRects[0] = sf::IntRect(4, 105, 17, 17);
@@ -33,41 +29,16 @@ void setRects()
     astRects[19] = sf::IntRect(98, 2, 54, 47);
     astRects[20] = sf::IntRect(174, 6, 71, 52);
 
-
-
-    shipShootRects[0][0][0] = sf::IntRect(4, 202, 36, 46);    //SHIP=1 ENGINE=OFF FRAME=1
-    shipShootRects[0][1][0] = sf::IntRect(4, 251, 36, 50);    //SHIP=1 ENGINE=ON FRAME=1
-    shipShootRects[0][0][1] = sf::IntRect(42, 202, 36, 46);    //SHIP=1 ENGINE=OFF FRAME=2
-    shipShootRects[0][1][1] = sf::IntRect(42, 251, 36, 50);    //SHIP=1 ENGINE=ON FRAME=2
-    shipShootRects[0][0][2] = sf::IntRect(79, 202, 36, 46);    //SHIP=1 ENGINE=OFF FRAME=3
-    shipShootRects[0][1][2] = sf::IntRect(79, 251, 36, 50);    //SHIP=1 ENGINE=ON FRAME=3
-    shipShootRects[0][0][3] = sf::IntRect(116, 202, 36, 46);    //SHIP=1 ENGINE=OFF FRAME=4
-    shipShootRects[0][1][3] = sf::IntRect(116, 251, 36, 50);    //SHIP=1 ENGINE=ON FRAME=4
-    shipShootRects[0][0][4] = sf::IntRect(153, 202, 36, 46);    //SHIP=1 ENGINE=OFF FRAME=5
-    shipShootRects[0][1][4] = sf::IntRect(153, 251, 36, 50);    //SHIP=1 ENGINE=ON FRAME=5
-
-    shipShootRects[1][0][0] = sf::IntRect(233, 176, 28, 37);    //SHIP=2 ENGINE=OFF FRAME=1
-    shipShootRects[1][1][0] = sf::IntRect(232, 220, 32, 41);    //SHIP=2 ENGINE=ON FRAME=1
-    shipShootRects[1][0][1] = sf::IntRect(278, 176, 28, 33);    //SHIP=2 ENGINE=OFF FRAME=2
-    shipShootRects[1][1][1] = sf::IntRect(272, 221, 40, 40);    //SHIP=2 ENGINE=ON FRAME=2
-    shipShootRects[1][0][2] = sf::IntRect(314, 264, 36, 37);    //SHIP=2 ENGINE=OFF FRAME=3
-    shipShootRects[1][1][2] = sf::IntRect(315, 220, 36, 41);    //SHIP=2 ENGINE=ON FRAME=3
-    shipShootRects[1][0][3] = sf::IntRect(361, 264, 30, 37);    //SHIP=2 ENGINE=OFF FRAME=4
-    shipShootRects[1][1][3] = sf::IntRect(362, 220, 30, 41);    //SHIP=2 ENGINE=ON FRAME=4
-    shipShootRects[1][0][4] = sf::IntRect(405, 264, 28, 37);    //SHIP=2 ENGINE=OFF FRAME=5
-    shipShootRects[1][1][4] = sf::IntRect(406, 220, 28, 41);    //SHIP=2 ENGINE=ON FRAME=5
-
-    shipShootRects[2][0][0] = sf::IntRect();    //SHIP=3 ENGINE=OFF FRAME=1
-    shipShootRects[2][1][0] = sf::IntRect();    //SHIP=3 ENGINE=ON FRAME=1
-    shipShootRects[2][0][1] = sf::IntRect();    //SHIP=3 ENGINE=OFF FRAME=2
-    shipShootRects[2][1][1] = sf::IntRect();    //SHIP=3 ENGINE=ON FRAME=2
-    shipShootRects[2][0][2] = sf::IntRect();    //SHIP=3 ENGINE=OFF FRAME=3
-    shipShootRects[2][1][2] = sf::IntRect();    //SHIP=3 ENGINE=ON FRAME=3
-    shipShootRects[2][0][3] = sf::IntRect();    //SHIP=3 ENGINE=OFF FRAME=4
-    shipShootRects[2][1][3] = sf::IntRect();    //SHIP=3 ENGINE=ON FRAME=4
-    shipShootRects[2][0][4] = sf::IntRect();    //SHIP=3 ENGINE=OFF FRAME=5
-    shipShootRects[2][1][4] = sf::IntRect();    //SHIP=3 ENGINE=ON FRAME=5
-
+    playerShipShootRects[0][0] = sf::IntRect(227, 264, 40, 40);    //SHIP=2 ENGINE=OFF FRAME=1
+    playerShipShootRects[1][0] = sf::IntRect(228, 220, 40, 40);    //SHIP=2 ENGINE=ON FRAME=1
+    playerShipShootRects[0][1] = sf::IntRect(271, 265, 40, 40);    //SHIP=2 ENGINE=OFF FRAME=2
+    playerShipShootRects[1][1] = sf::IntRect(272, 220, 40, 40);    //SHIP=2 ENGINE=ON FRAME=2
+    playerShipShootRects[0][2] = sf::IntRect(312, 264, 40, 40);    //SHIP=2 ENGINE=OFF FRAME=3
+    playerShipShootRects[1][2] = sf::IntRect(313, 220, 40, 40);    //SHIP=2 ENGINE=ON FRAME=3
+    playerShipShootRects[0][3] = sf::IntRect(356, 264, 40, 40);    //SHIP=2 ENGINE=OFF FRAME=4
+    playerShipShootRects[1][3] = sf::IntRect(357, 220, 40, 40);    //SHIP=2 ENGINE=ON FRAME=4
+    playerShipShootRects[0][4] = sf::IntRect(399, 264, 40, 40);    //SHIP=2 ENGINE=OFF FRAME=5
+    playerShipShootRects[1][4] = sf::IntRect(400, 220, 40, 40);    //SHIP=2 ENGINE=ON FRAME=5
 
 
 
