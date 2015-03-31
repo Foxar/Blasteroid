@@ -40,6 +40,13 @@ void setRects()
     playerShipShootRects[0][4] = sf::IntRect(399, 264, 40, 40);    //SHIP=2 ENGINE=OFF FRAME=5
     playerShipShootRects[1][4] = sf::IntRect(400, 220, 40, 40);    //SHIP=2 ENGINE=ON FRAME=5
 
+    explRect[0] = sf::IntRect(0, 0, 100, 100);
+    explRect[1] = sf::IntRect(100, 0, 100, 100);
+    explRect[2] = sf::IntRect(200, 0, 100, 100);
+    explRect[3] = sf::IntRect(300, 0, 100, 100);
+    explRect[4] = sf::IntRect(400, 0, 100, 100);
+    explRect[5] = sf::IntRect(500, 0, 100, 100);
+
 
 
     plasma[0] = sf::IntRect(152, 173, 6, 13);

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <windows.h>
 #include <cmath>
+#include <stdlib.h>
 
 //TO DO
 //
@@ -16,7 +17,8 @@
 //DIFFERENT SHIPS
 //DIFFERENT ATTACKS
 //RANDOM ASTEROIDS
-//ASTEROIDS EXPLOSIONS
+//PARTICLES (EXPLOSIONS)
+//BETTER RANDOM DIRECTION OF ASTEROID DEBREE
 //
 //
 //IMPORTANT!!! DIFFERENT SHIP RECTS USE
@@ -56,8 +58,10 @@ int main()
 
     //CREATE OBJECTS
     player pObj(100, 50, 50, spreadtex);
-    asteroid ast1(3, 100, 100, spreadtex);
+    asteroid aster(3, 100, 100, spreadtex);
+    aster.speed = 0;
 
+    astList.push_back(aster);
 
     while(app.isOpen())
     {
@@ -141,6 +145,59 @@ int main()
             }
         }
 
+        //ASTEROID SPAWN PROTECTION
+        for(int i = 0; i < astList.size(); i++)
+        {
+            astList[i].immoTime--;
+            if(astList[i].immoTime < 0)
+                astList[i].immoTime = 0;
+        }
+
+        //COLLISION DETECTION
+        for(int i = 0; i < bulletList.size(); i++)
+        {
+            for(int n = 0; n < astList.size(); n++)
+            {
+                std::cout << "AstList: " << n << " AND bulletList: " << i << " OUT OF " << astList.size() << std::endl;
+                if(bulletList[i].sprite.getGlobalBounds().intersects(astList[n].sprite.getGlobalBounds()) &&
+                   astList[n].dead != true &&
+                   astList[n].immoTime <= 0)
+                {
+                    int astSize = 0;
+                    int nPosX = astList[n].sprite.getPosition().x;
+                    int nPosY = astList[n].sprite.getPosition().y;
+                    switch(astList[n].Size)
+                    {
+                    case 3:
+                        {
+                            astSize = 2;
+                            break;
+                        }
+                    case 2:
+                        {
+
+                            astSize = 1;
+                            break;
+                        }
+                    default:
+                        continue;
+                        break;
+                    }
+                    asteroid ast1(astSize, nPosX, nPosY, spreadtex);
+                    asteroid ast2(astSize, nPosX, nPosY, spreadtex);
+                    srand(GetTickCount());
+                    ast1.speed = rand() % 6 - 2;
+                    srand(GetTickCount());
+                    ast2.speed = (rand() % 6 - 2) * -1;
+                    bulletList[i].sprite.move(-5000, -5000);
+                    astList[n].dead = true;
+                    astList.erase(astList.begin() + n);
+                    astList.push_back(ast1);
+                    astList.push_back(ast2);
+                }
+            }
+        }
+
 
         //SLOWDOWN
         if((sf::Mouse::getPosition(app).x - pObj.sprite.getPosition().x <= 50 && sf::Mouse::getPosition(app).x - pObj.sprite.getPosition().x >= - 50) &&
@@ -197,6 +254,10 @@ int main()
         {
             bulletList[i].sprite.move(bulletList[i].vel.x * bulletList[i].speed, bulletList[i].vel.y * bulletList[i].speed);
         }
+        for(int i = 0; i < astList.size(); i++)
+        {
+            astList[i].sprite.move(astList[i].speed, astList[i].speed);
+        }
         //DISPLAY
         for(int i = 0; i < bulletList.size(); i++)
         {
@@ -204,8 +265,11 @@ int main()
             app.draw(bulletList[i].sprite);
         }
         app.draw(pObj.sprite);
-        app.draw(ast1.sprite);
-
+        for(int i = 0; i < astList.size(); i++)
+        {
+            astList[i].sprite.setTexture(spreadtex);
+            app.draw(astList[i].sprite);
+        }
         app.display();
         app.clear(sf::Color::Black);
 

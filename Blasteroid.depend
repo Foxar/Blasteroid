@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1427633249 source:f:\programming (new)\projects\blasteroid\main.cpp
+1427833603 source:f:\programming (new)\projects\blasteroid\main.cpp
 	<SFML/Graphics.hpp>
 	"global.h"
 	"player.h"
@@ -9,21 +9,22 @@
 	<iostream>
 	<windows.h>
 	<cmath>
+	<stdlib.h>
 
 1427633280 f:\programming (new)\projects\blasteroid\include\player.h
 	<SFML/Graphics.hpp>
 
-1427208245 f:\programming (new)\projects\blasteroid\include\asteroid.h
+1427833385 f:\programming (new)\projects\blasteroid\include\asteroid.h
 	<SFML/Graphics.hpp>
 
 1426707606 f:\programming (new)\projects\blasteroid\src\rectcontroller.cpp
 	<SFML/Graphics.hpp>
 	"rectController.h"
 
-1427549980 f:\programming (new)\projects\blasteroid\include\rectcontroller.h
+1427827700 f:\programming (new)\projects\blasteroid\include\rectcontroller.h
 	<SFML/Graphics.hpp>
 
-1427235533 source:f:\programming (new)\projects\blasteroid\src\asteroid.cpp
+1427833422 source:f:\programming (new)\projects\blasteroid\src\asteroid.cpp
 	"asteroid.h"
 	"rectController.h"
 
@@ -34,13 +35,15 @@
 	"listController.h"
 	<iostream>
 
-1427628782 source:f:\programming (new)\projects\blasteroid\src\rectcontroller.cpp
+1427827691 source:f:\programming (new)\projects\blasteroid\src\rectcontroller.cpp
 	<SFML/Graphics.hpp>
 	"rectController.h"
 
-1427550649 f:\programming (new)\projects\blasteroid\include\global.h
+1427828112 f:\programming (new)\projects\blasteroid\include\global.h
 	<SFML/Graphics.hpp>
 	"bullet.h"
+	"asteroid.h"
+	"particles.h"
 
 1427632162 source:f:\programming (new)\projects\blasteroid\src\bullet.cpp
 	"bullet.h"
@@ -50,6 +53,14 @@
 1427407383 f:\programming (new)\projects\blasteroid\include\bullet.h
 	<SFML/Graphics.hpp>
 
-1427208732 f:\programming (new)\projects\blasteroid\include\listcontroller.h
+1427828068 f:\programming (new)\projects\blasteroid\include\listcontroller.h
 	"bullet.h"
+	"particles.h"
+	"asteroid.h"
+
+1427827786 f:\programming (new)\projects\blasteroid\include\particles.h
+	<SFML/Graphics.hpp>
+
+1427829951 source:f:\programming (new)\projects\blasteroid\src\particles.cpp
+	"particles.h"
 

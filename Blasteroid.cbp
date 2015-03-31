@@ -37,11 +37,13 @@
 		<Unit filename="include/bullet.h" />
 		<Unit filename="include/global.h" />
 		<Unit filename="include/listController.h" />
+		<Unit filename="include/particles.h" />
 		<Unit filename="include/player.h" />
 		<Unit filename="include/rectController.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/asteroid.cpp" />
 		<Unit filename="src/bullet.cpp" />
+		<Unit filename="src/particles.cpp" />
 		<Unit filename="src/player.cpp" />
 		<Unit filename="src/rectController.cpp" />
 		<Extensions>

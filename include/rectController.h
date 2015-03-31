@@ -14,4 +14,6 @@ extern sf::IntRect playerShipShootRects[5][2];
 
 extern sf::IntRect plasma[1];
 
+extern sf::IntRect explRect[6];
+
 #endif // RECTCONTROLLER_H_INCLUDED

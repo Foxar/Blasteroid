@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "bullet.h"
+#include "asteroid.h"
+#include "particles.h"
 #ifndef GLOBAL_H_INCLUDED
 #define GLOBAL_H_INCLUDED
 
@@ -16,7 +18,11 @@
 
  sf::IntRect plasma[1];
 
+ sf::IntRect explRect[6];
+
 std::vector<bullet>bulletList;
+std::vector<particles>partList;
+std::vector<asteroid>astList;
 
 
 
