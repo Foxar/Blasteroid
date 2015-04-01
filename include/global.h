@@ -14,7 +14,7 @@
 
  sf::IntRect shipShootRects[5][2]; //FRAME ENGINE
 
- sf::IntRect playerShipShootRects[5][2];
+ sf::IntRect playerShipShootRects[5][2][2];
 
  sf::IntRect plasma[1];
 

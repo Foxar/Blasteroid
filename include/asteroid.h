@@ -7,15 +7,17 @@ class asteroid
 {
     public:
         asteroid(int Size, int xPos, int yPos, sf::Texture texture);
+        asteroid(int Size, int xPos, int yPos, sf::Texture texture, int rect);
         asteroid();
         int Size;
         sf::Sprite sprite;
         sf::Texture tex;
         int rect;
         sf::Vector2f vel;
-        int speed;
+        float speed;
         bool dead;
         int immoTime;
+        int rotSpeed;
 };
 
 #endif // ASTEROID_H

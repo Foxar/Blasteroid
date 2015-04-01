@@ -10,7 +10,7 @@ extern sf::IntRect playerShipRects[2];
 
 extern sf::IntRect shipShootRects[5][2]; //FRAME ENGINE
 
-extern sf::IntRect playerShipShootRects[5][2];
+extern sf::IntRect playerShipShootRects[5][2][2];
 
 extern sf::IntRect plasma[1];
 

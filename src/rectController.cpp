@@ -29,16 +29,28 @@ void setRects()
     astRects[19] = sf::IntRect(98, 2, 54, 47);
     astRects[20] = sf::IntRect(174, 6, 71, 52);
 
-    playerShipShootRects[0][0] = sf::IntRect(227, 264, 40, 40);    //SHIP=2 ENGINE=OFF FRAME=1
-    playerShipShootRects[1][0] = sf::IntRect(228, 220, 40, 40);    //SHIP=2 ENGINE=ON FRAME=1
-    playerShipShootRects[0][1] = sf::IntRect(271, 265, 40, 40);    //SHIP=2 ENGINE=OFF FRAME=2
-    playerShipShootRects[1][1] = sf::IntRect(272, 220, 40, 40);    //SHIP=2 ENGINE=ON FRAME=2
-    playerShipShootRects[0][2] = sf::IntRect(312, 264, 40, 40);    //SHIP=2 ENGINE=OFF FRAME=3
-    playerShipShootRects[1][2] = sf::IntRect(313, 220, 40, 40);    //SHIP=2 ENGINE=ON FRAME=3
-    playerShipShootRects[0][3] = sf::IntRect(356, 264, 40, 40);    //SHIP=2 ENGINE=OFF FRAME=4
-    playerShipShootRects[1][3] = sf::IntRect(357, 220, 40, 40);    //SHIP=2 ENGINE=ON FRAME=4
-    playerShipShootRects[0][4] = sf::IntRect(399, 264, 40, 40);    //SHIP=2 ENGINE=OFF FRAME=5
-    playerShipShootRects[1][4] = sf::IntRect(400, 220, 40, 40);    //SHIP=2 ENGINE=ON FRAME=5
+    playerShipShootRects[0][0][0] = sf::IntRect(3, 291, 40, 40);    // ENGINE=OFF FRAME=1 LEFT
+    playerShipShootRects[1][0][0] = sf::IntRect(0, 247, 40, 40);    // ENGINE=ON FRAME=1 LEFT
+    playerShipShootRects[0][1][0] = sf::IntRect(47, 291, 40, 40);    // ENGINE=OFF FRAME=2 LEFT
+    playerShipShootRects[1][1][0] = sf::IntRect(44, 247, 40, 40);    // ENGINE=ON FRAME=2 LEFT
+    playerShipShootRects[0][2][0] = sf::IntRect(88, 291, 40, 40);    // ENGINE=OFF FRAME=3 LEFT
+    playerShipShootRects[1][2][0] = sf::IntRect(85, 247, 40, 40);    // ENGINE=ON FRAME=3 LEFT
+    playerShipShootRects[0][3][0] = sf::IntRect(132, 291, 40, 40);    // ENGINE=OFF FRAME=4 LEFT
+    playerShipShootRects[1][3][0] = sf::IntRect(129, 247, 40, 40);    // ENGINE=ON FRAME=4 LEFT
+    playerShipShootRects[0][4][0] = sf::IntRect(175, 291, 40, 40);    // ENGINE=OFF FRAME=5 LEFT
+    playerShipShootRects[1][4][0] = sf::IntRect(172, 247, 40, 40);    // ENGINE=ON FRAME=5 LEFT
+
+
+    playerShipShootRects[0][0][1] = sf::IntRect(227, 291, 40, 40);    // ENGINE=OFF FRAME=1 RIGHT
+    playerShipShootRects[1][0][1] = sf::IntRect(222, 247, 40, 40);    // ENGINE=ON FRAME=1 RIGHT
+    playerShipShootRects[0][1][1] = sf::IntRect(270, 291, 40, 40);    // ENGINE=OFF FRAME=2 RIGHT
+    playerShipShootRects[1][1][1] = sf::IntRect(265, 247, 40, 40);    // ENGINE=ON FRAME=2 RIGHT
+    playerShipShootRects[0][2][1] = sf::IntRect(314, 291, 40, 40);    // ENGINE=OFF FRAME=3 RIGHT
+    playerShipShootRects[1][2][1] = sf::IntRect(309, 247, 40, 40);    // ENGINE=ON FRAME=3 RIGHT
+    playerShipShootRects[0][3][1] = sf::IntRect(355, 291, 40, 40);    // ENGINE=OFF FRAME=4 RIGHT
+    playerShipShootRects[1][3][1] = sf::IntRect(650, 247, 40, 40);    // ENGINE=ON FRAME=4 RIGHT
+    playerShipShootRects[0][4][1] = sf::IntRect(399, 291, 40, 40);    // ENGINE=OFF FRAME=5 RIGHT
+    playerShipShootRects[1][4][1] = sf::IntRect(394, 247, 40, 40);    // ENGINE=ON FRAME=5 RIGHT
 
     explRect[0] = sf::IntRect(0, 0, 100, 100);
     explRect[1] = sf::IntRect(100, 0, 100, 100);

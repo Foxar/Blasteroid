@@ -8,6 +8,8 @@
 #include <windows.h>
 #include <cmath>
 #include <stdlib.h>
+#include <time.h>
+#include <random>
 
 //TO DO
 //
@@ -18,10 +20,13 @@
 //DIFFERENT ATTACKS
 //RANDOM ASTEROIDS
 //PARTICLES (EXPLOSIONS)
-//BETTER RANDOM DIRECTION OF ASTEROID DEBREE
 //
 //
-//IMPORTANT!!! DIFFERENT SHIP RECTS USE
+//
+//
+//MORE COMMENTS
+//
+//JUICE (BASIC SCREEN SHAKING , ADD A CAMERA)
 
 
 
@@ -37,6 +42,9 @@ int gameState = 0;
 bool LMB = false;
 
 sf::RenderWindow app;
+
+int counter = 0;
+int timeSinceStart = 0;
 
 int main()
 {
@@ -58,7 +66,7 @@ int main()
 
     //CREATE OBJECTS
     player pObj(100, 50, 50, spreadtex);
-    asteroid aster(3, 100, 100, spreadtex);
+    asteroid aster(3, 400, 300, spreadtex);
     aster.speed = 0;
 
     astList.push_back(aster);
@@ -73,6 +81,10 @@ int main()
             pObj.sprite.setOrigin(pObj.sprite.getTextureRect().width/2, pObj.sprite.getTextureRect().height/2);
             pObj.vel.x = getMovement(pObj.sprite.getRotation()).x;
             pObj.vel.y = getMovement(pObj.sprite.getRotation()).y;
+
+
+            counter++;
+            timeSinceStart = counter / 60;
 
             if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && pObj.speed >= 0)
             {
@@ -131,11 +143,11 @@ int main()
         {
             if(pObj.isAccelerating)
             {
-                pObj.sprite.setTextureRect(playerShipShootRects[1][pObj.muzzleFrame - 1]);
+                pObj.sprite.setTextureRect(playerShipShootRects[1][pObj.muzzleFrame - 1][pObj.shootingLeft]);
             }
             else
             {
-                pObj.sprite.setTextureRect(playerShipShootRects[0][pObj.muzzleFrame - 1]);
+                pObj.sprite.setTextureRect(playerShipShootRects[0][pObj.muzzleFrame - 1][pObj.shootingLeft]);
             }
             pObj.sprite.setOrigin(pObj.sprite.getTextureRect().width/2, pObj.sprite.getTextureRect().height/2);
             pObj.muzzleFrame++;
@@ -158,42 +170,110 @@ int main()
         {
             for(int n = 0; n < astList.size(); n++)
             {
-                std::cout << "AstList: " << n << " AND bulletList: " << i << " OUT OF " << astList.size() << std::endl;
                 if(bulletList[i].sprite.getGlobalBounds().intersects(astList[n].sprite.getGlobalBounds()) &&
-                   astList[n].dead != true &&
                    astList[n].immoTime <= 0)
                 {
-                    int astSize = 0;
+                    int astSize = astList[n].Size;
                     int nPosX = astList[n].sprite.getPosition().x;
                     int nPosY = astList[n].sprite.getPosition().y;
-                    switch(astList[n].Size)
-                    {
-                    case 3:
-                        {
-                            astSize = 2;
-                            break;
-                        }
-                    case 2:
-                        {
 
-                            astSize = 1;
-                            break;
+                    std::default_random_engine generator;
+                    std::uniform_real_distribution<float> velDist(1.0, 20.0);       //RANDOM DIRECTION DISTRIBUTION
+                    std::uniform_real_distribution<float> speedDist1(0.05, 0.5);    //RANDOM SPEED FOR SIZE1 DIST.
+                    std::uniform_real_distribution<float> speedDist2(0.05, 0.3);    //RANDOM SPEED FOR SIZE2 DIST.
+                    std::uniform_int_distribution<int> rotDist(0, 360);             //RANDOM ROTATION DIST.
+                    std::uniform_real_distribution<float> rotSpdDist(0.0, 5.0);     //RANDOM ROTATION SPEED DIST.
+
+                    std::uniform_int_distribution<int> rectDist1(0, 12);            //RANDOM SIZE1 RECT DIST.
+                    std::uniform_int_distribution<int> rectDist2(13, 18);           //RANDOM SIZE2 RECT DIST.
+                    std::uniform_int_distribution<int> rectDist3(19, 20);           //RANDOM SIZE3 RECT DIST.
+
+                    if(astList[n].Size == 3)
+                    {
+
+                        bulletList[i].sprite.move(-5000, -5000);
+
+                        asteroid astToAdd1(1, nPosX, nPosY, spreadtex); // FEW TEMPLATE ASTEROIDS
+                        asteroid astToAdd2(2, nPosX, nPosY, spreadtex);
+
+
+                        for(int i = 0; i < 2; i++)
+                        {
+                            astToAdd2.immoTime = 60;//SPAWN PROTECTION
+
+                            int rectToUse = rectDist2(generator);//RANDOM RECT PICK
+                            asteroid astToAdd2(2, nPosX, nPosY, spreadtex, rectToUse);//REDEFINITION WITH NEW RECT
+
+                            //CALCULATING A RANDOM RIECTION
+                            float rand1 = velDist(generator);
+                            rand1-= 10;
+                            float rand2 = velDist(generator);
+                            rand2-= 10;
+                            astToAdd2.vel.x = rand1;
+                            astToAdd2.vel.y = rand2;
+                            //CALCULATING RANDOM SPEED
+                            astToAdd2.speed = speedDist2(generator);
+                            //CALCULATING RANDOM ROTATION
+                            astToAdd2.sprite.setRotation(rotDist(generator));
+                            //CALCULATING RANDOM ROTATION SPEED
+                            astToAdd2.rotSpeed = rotSpdDist(generator) - 2.5;
+                            //ADDED TO LIST
+                            astList.push_back(astToAdd2);
                         }
-                    default:
-                        continue;
-                        break;
+                        for(int i = 0; i < 3; i++)                          //CHECK THE LOOP ABOVE FOR REFERENCE
+                        {
+                            astToAdd1.immoTime = 60;
+                            int rectToUse = rectDist1(generator);
+                            asteroid astToAdd1(1, nPosX, nPosY, spreadtex, rectToUse);
+
+                            float rand1 = velDist(generator);
+                            rand1-= 10;
+                            float rand2 = velDist(generator);
+                            rand2-= 10;
+                            astToAdd1.vel.x = rand1;
+                            astToAdd1.vel.y = rand2;
+
+                            astToAdd1.speed = speedDist1(generator);
+
+                            astToAdd1.sprite.setRotation(rotDist(generator));
+
+                            astToAdd1.rotSpeed = rotSpdDist(generator) - 2.5;
+
+                            astList.push_back(astToAdd1);
+                        }
+
+
                     }
-                    asteroid ast1(astSize, nPosX, nPosY, spreadtex);
-                    asteroid ast2(astSize, nPosX, nPosY, spreadtex);
-                    srand(GetTickCount());
-                    ast1.speed = rand() % 6 - 2;
-                    srand(GetTickCount());
-                    ast2.speed = (rand() % 6 - 2) * -1;
-                    bulletList[i].sprite.move(-5000, -5000);
-                    astList[n].dead = true;
+
+                    if(astList[n].Size == 2)
+                    {
+
+                        asteroid astToAdd(1, nPosX, nPosY, spreadtex);
+
+                        for(int i = 0; i < 3; i++)                          //CHECK THE LOOP ABOVE FOR REFERENCE
+                        {
+                            astToAdd.immoTime = 60;
+                            int rectToUse = rectDist1(generator);
+                            asteroid astToAdd(1, nPosX, nPosY, spreadtex, rectToUse);
+
+                            float rand1 = velDist(generator);
+                            rand1-= 10;
+                            float rand2 = velDist(generator);
+                            rand2-= 10;
+                            astToAdd.vel.x = rand1;
+                            astToAdd.vel.y = rand2;
+
+                            astToAdd.speed = speedDist1(generator);
+
+                            astToAdd.sprite.setRotation(rotDist(generator));
+
+                            astToAdd.rotSpeed = rotSpdDist(generator) - 2.5;
+
+                            astList.push_back(astToAdd);
+                        }
+                    }
+
                     astList.erase(astList.begin() + n);
-                    astList.push_back(ast1);
-                    astList.push_back(ast2);
                 }
             }
         }
@@ -256,7 +336,8 @@ int main()
         }
         for(int i = 0; i < astList.size(); i++)
         {
-            astList[i].sprite.move(astList[i].speed, astList[i].speed);
+            astList[i].sprite.move(astList[i].speed * astList[i].vel.x, astList[i].speed * astList[i].vel.y);
+            astList[i].sprite.rotate(astList[i].rotSpeed);
         }
         //DISPLAY
         for(int i = 0; i < bulletList.size(); i++)

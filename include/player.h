@@ -18,6 +18,7 @@ class player
         int health;
         int muzzleFrame;
         bool isAccelerating;
+        bool shootingLeft;
 };
 
 #endif // PLAYER_H
