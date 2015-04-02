@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <random>
+#include <chrono>
 
 //TO DO
 //
@@ -19,14 +20,13 @@
 //DIFFERENT SHIPS
 //DIFFERENT ATTACKS
 //RANDOM ASTEROIDS
-//PARTICLES (EXPLOSIONS)
 //
 //
 //
 //
 //MORE COMMENTS
 //
-//JUICE (BASIC SCREEN SHAKING , ADD A CAMERA)
+//MAKE CAMERA MOVE WHEN SHIP APPROACHES BORDER OF THE SCREEN
 
 
 
@@ -42,15 +42,27 @@ int gameState = 0;
 bool LMB = false;
 
 sf::RenderWindow app;
+sf::View camera;
+
 
 int counter = 0;
 int timeSinceStart = 0;
+sf::Vector2f screenShake;
+float screenShakeCounter = 0;
+
+sf::Vector2f cameraVel;
 
 int main()
 {
     //WINDOW CREATION
     sf::RenderWindow app(sf::VideoMode(800, 600, 32), "Blasteroid");
+    camera.reset(sf::FloatRect(0, 0, 640, 480));
     app.setVerticalSyncEnabled(true);
+    app.setView(camera);
+    screenShake.x = 0;
+    screenShake.y = 0;
+    cameraVel.x = 0;
+    cameraVel.y = 0;
     //FRAMERATE CAP
     app.setFramerateLimit(60);
     //RAND SEED
@@ -64,15 +76,30 @@ int main()
     spreadtex.loadFromFile("Assets/spreadsheet.png");
     spreadtex.setSmooth(true);
 
+    sf::Texture partTex;
+    partTex.loadFromFile("Assets/particles.png");
+    partTex.setSmooth(true);
+
     //CREATE OBJECTS
-    player pObj(100, 50, 50, spreadtex);
+    player pObj(100, 250, 250, spreadtex);
     asteroid aster(3, 400, 300, spreadtex);
     aster.speed = 0;
+
+    //SEED FOR RANDOM GENERATION
+    unsigned shakeSeed = std::chrono::system_clock::now().time_since_epoch().count();
+    //RANDOM VALUE TO MOVE CAMERA BY TO SIMULATE SHAKE GENERATOR
+    std::default_random_engine shakeGenerator(shakeSeed);
+    std::uniform_int_distribution<int> shakeDist(1, 20);
 
     astList.push_back(aster);
 
     while(app.isOpen())
     {
+            //UPDATE THE VIEWPORT OF THE WINDOW TO THE CAMERA
+            app.setView(camera);
+            //RESET CAMERA SPEED
+            cameraVel.x = 0;
+            cameraVel.y = 0;
 
             //RESET POBJ MEMBERS
             pObj.accel = 0;
@@ -81,10 +108,27 @@ int main()
             pObj.sprite.setOrigin(pObj.sprite.getTextureRect().width/2, pObj.sprite.getTextureRect().height/2);
             pObj.vel.x = getMovement(pObj.sprite.getRotation()).x;
             pObj.vel.y = getMovement(pObj.sprite.getRotation()).y;
+            if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Space) &&
+               pObj.speed > -1 &&
+               pObj.speed < 1)
+            {
+                pObj.speed = 0;
+            }
+
+            //MOUSE POSITION GET
+            sf::Vector2i mouseWindow = sf::Mouse::getPosition(app);
+            //CONVERT MOUSE POSITION SO IT MATCHES CAMERA
+            sf::Vector2f mouseCamera = app.mapPixelToCoords(mouseWindow);
+
+            //RESET SEED FOR RANDOM GENERATION
+            unsigned shakeSeed = std::chrono::system_clock::now().time_since_epoch().count();
+            shakeGenerator = std::default_random_engine(shakeSeed);
 
 
+
+            //HOW MANY FRAMES PASSED SINCE START
             counter++;
-            timeSinceStart = counter / 60;
+            timeSinceStart = counter / 60;  //HOW MANY SECONDS PASSED SINCE START OF THE GAME
 
             if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && pObj.speed >= 0)
             {
@@ -125,7 +169,7 @@ int main()
             //ROTATING
             if(sf::Mouse::isButtonPressed(sf::Mouse::Right))
             {
-                pObj.sprite.setRotation(getAngle(sf::Mouse::getPosition(app).x - pObj.sprite.getPosition().x, sf::Mouse::getPosition(app).y - pObj.sprite.getPosition().y) + 90);
+                pObj.sprite.setRotation(getAngle(mouseCamera.x - pObj.sprite.getPosition().x, mouseCamera.y - pObj.sprite.getPosition().y) + 90);
             }
             //SHOOTING
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left) && !LMB)
@@ -156,6 +200,31 @@ int main()
                 pObj.muzzleFrame = 0;
             }
         }
+        for(int i = 0; i < partList.size(); i++)
+        {
+            if(partList[i].alive)
+            {
+                switch(partList[i].activeAnim)
+                {
+                case 1:
+                    partList[i].sprite.setTextureRect(partRect[partList[i].frame][0]);  //animation1
+                    partList[i].sprite.setOrigin(partList[i].sprite.getLocalBounds().width/2, partList[i].sprite.getLocalBounds().height/2);
+                    break;
+                default:
+                    break;
+                }
+                if(partList[i].frame < partList[i].maxFrame)
+                {
+                    partList[i].frame++;
+                }
+                else
+                {
+                    partList[i].alive = false;
+                    partList[i].frame = 0;
+                }
+            }
+        }
+
 
         //ASTEROID SPAWN PROTECTION
         for(int i = 0; i < astList.size(); i++)
@@ -177,7 +246,9 @@ int main()
                     int nPosX = astList[n].sprite.getPosition().x;
                     int nPosY = astList[n].sprite.getPosition().y;
 
-                    std::default_random_engine generator;
+
+                    unsigned seed1 = std::chrono::system_clock::now().time_since_epoch().count();
+                    std::default_random_engine generator(seed1);
                     std::uniform_real_distribution<float> velDist(1.0, 20.0);       //RANDOM DIRECTION DISTRIBUTION
                     std::uniform_real_distribution<float> speedDist1(0.05, 0.5);    //RANDOM SPEED FOR SIZE1 DIST.
                     std::uniform_real_distribution<float> speedDist2(0.05, 0.3);    //RANDOM SPEED FOR SIZE2 DIST.
@@ -274,14 +345,35 @@ int main()
                     }
 
                     astList.erase(astList.begin() + n);
+
+                    particles particleToAdd(nPosX, nPosY, 0, 0, 0, partTex);
+                    particleToAdd.setAnim("astExplode");
+
+                    screenShakeCounter = 1;
+
+                    partList.push_back(particleToAdd);
+
                 }
             }
         }
 
+        int playerDistanceCamera[4];
+        playerDistanceCamera[0] = (camera.getViewport().top - pObj.sprite.getPosition().y);
+        playerDistanceCamera[1] = (camera.getViewport().left + camera.getViewport().width) - pObj.sprite.getPosition().x;
+        playerDistanceCamera[2] = (camera.getViewport().top + camera.getViewport().height) - pObj.sprite.getPosition().y;;
+        playerDistanceCamera[3] = camera.getViewport().left - pObj.sprite.getPosition().x;
+
+        std::cout << camera.getViewport().top << " - " << pObj.sprite.getPosition().y << " = " <<playerDistanceCamera[0] << std::endl;
+
+            if(playerDistanceCamera[0] >= -50)
+            {
+                //cameraVel.y = -5;
+            }
+
 
         //SLOWDOWN
-        if((sf::Mouse::getPosition(app).x - pObj.sprite.getPosition().x <= 50 && sf::Mouse::getPosition(app).x - pObj.sprite.getPosition().x >= - 50) &&
-           (sf::Mouse::getPosition(app).y - pObj.sprite.getPosition().y <= 50 && sf::Mouse::getPosition(app).y - pObj.sprite.getPosition().y >= - 50) &&
+        if((mouseCamera.x - pObj.sprite.getPosition().x <= 50 && mouseCamera.x - pObj.sprite.getPosition().x >= - 50) &&
+           (mouseCamera.y - pObj.sprite.getPosition().y <= 50 && mouseCamera.y - pObj.sprite.getPosition().y >= - 50) &&
            pObj.speed > 0)
         {
             if(pObj.speed == 0.1)
@@ -289,23 +381,6 @@ int main()
                 pObj.accel = 0.2;
             }
             pObj.accel = -0.2;
-        }
-        if(pObj.sprite.getGlobalBounds().left > 800 && pObj.vel.x > 0)
-        {
-            pObj.sprite.setPosition(-pObj.sprite.getLocalBounds().width, pObj.sprite.getPosition().y);
-        }
-        else if(pObj.sprite.getGlobalBounds().top > 600 && pObj.vel.y < 0)
-        {
-            pObj.sprite.setPosition(pObj.sprite.getPosition().x, -pObj.sprite.getLocalBounds().height);
-        }
-
-        else if(pObj.sprite.getGlobalBounds().top + pObj.sprite.getLocalBounds().height < 0 && pObj.vel.y > 0)
-        {
-            pObj.sprite.setPosition(pObj.sprite.getPosition().x, 600 + pObj.sprite.getLocalBounds().height);
-        }
-        else if(pObj.sprite.getGlobalBounds().left + pObj.sprite.getLocalBounds().width < 0 && pObj.vel.x < 0)
-        {
-            pObj.sprite.setPosition(800 + pObj.sprite.getLocalBounds().width,  pObj.sprite.getPosition().y);
         }
 
         //GARBAGE COLLECTION
@@ -351,6 +426,27 @@ int main()
             astList[i].sprite.setTexture(spreadtex);
             app.draw(astList[i].sprite);
         }
+        for(int i = 0; i < partList.size(); i++)
+        {
+            partList[i].sprite.setTexture(partTex);
+            app.draw(partList[i].sprite);
+        }
+        if(screenShakeCounter > 0)
+        {
+            screenShake.x = (shakeDist(shakeGenerator) - 10) / screenShakeCounter;
+            screenShake.y = screenShake.x;
+
+
+            screenShakeCounter+= 0.2;
+
+            if(screenShakeCounter > 9)
+            {
+                screenShake.x = 0;
+                screenShake.y = 0;
+                screenShakeCounter = 0;
+            }
+        }
+        camera.move(screenShake.x + cameraVel.x, screenShake.y + cameraVel.y);
         app.display();
         app.clear(sf::Color::Black);
 

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1427917363 source:f:\programming (new)\projects\blasteroid\main.cpp
+1427985156 source:f:\programming (new)\projects\blasteroid\main.cpp
 	<SFML/Graphics.hpp>
 	"global.h"
 	"player.h"
@@ -12,6 +12,7 @@
 	<stdlib.h>
 	<time.h>
 	<random>
+	<chrono>
 
 1427915174 f:\programming (new)\projects\blasteroid\include\player.h
 	<SFML/Graphics.hpp>
@@ -23,7 +24,7 @@
 	<SFML/Graphics.hpp>
 	"rectController.h"
 
-1427916229 f:\programming (new)\projects\blasteroid\include\rectcontroller.h
+1427931001 f:\programming (new)\projects\blasteroid\include\rectcontroller.h
 	<SFML/Graphics.hpp>
 
 1427912556 source:f:\programming (new)\projects\blasteroid\src\asteroid.cpp
@@ -38,11 +39,11 @@
 	"listController.h"
 	<iostream>
 
-1427917388 source:f:\programming (new)\projects\blasteroid\src\rectcontroller.cpp
+1427930989 source:f:\programming (new)\projects\blasteroid\src\rectcontroller.cpp
 	<SFML/Graphics.hpp>
 	"rectController.h"
 
-1427916220 f:\programming (new)\projects\blasteroid\include\global.h
+1427930963 f:\programming (new)\projects\blasteroid\include\global.h
 	<SFML/Graphics.hpp>
 	"bullet.h"
 	"asteroid.h"
@@ -56,14 +57,14 @@
 1427407383 f:\programming (new)\projects\blasteroid\include\bullet.h
 	<SFML/Graphics.hpp>
 
-1427828068 f:\programming (new)\projects\blasteroid\include\listcontroller.h
+1427930111 f:\programming (new)\projects\blasteroid\include\listcontroller.h
 	"bullet.h"
 	"particles.h"
 	"asteroid.h"
 
-1427827786 f:\programming (new)\projects\blasteroid\include\particles.h
+1427931831 f:\programming (new)\projects\blasteroid\include\particles.h
 	<SFML/Graphics.hpp>
 
-1427829951 source:f:\programming (new)\projects\blasteroid\src\particles.cpp
+1427931873 source:f:\programming (new)\projects\blasteroid\src\particles.cpp
 	"particles.h"
 

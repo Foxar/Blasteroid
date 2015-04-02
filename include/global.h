@@ -18,7 +18,7 @@
 
  sf::IntRect plasma[1];
 
- sf::IntRect explRect[6];
+ sf::IntRect partRect[6][1];
 
 std::vector<bullet>bulletList;
 std::vector<particles>partList;
