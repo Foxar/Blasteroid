@@ -23,7 +23,6 @@
 //
 //
 //
-//
 //MORE COMMENTS
 //
 //MAKE CAMERA MOVE WHEN SHIP APPROACHES BORDER OF THE SCREEN
@@ -98,8 +97,7 @@ int main()
             //UPDATE THE VIEWPORT OF THE WINDOW TO THE CAMERA
             app.setView(camera);
             //RESET CAMERA SPEED
-            cameraVel.x = 0;
-            cameraVel.y = 0;
+
 
             //RESET POBJ MEMBERS
             pObj.accel = 0;
@@ -358,16 +356,37 @@ int main()
         }
 
         int playerDistanceCamera[4];
-        playerDistanceCamera[0] = (camera.getViewport().top - pObj.sprite.getPosition().y);
-        playerDistanceCamera[1] = (camera.getViewport().left + camera.getViewport().width) - pObj.sprite.getPosition().x;
-        playerDistanceCamera[2] = (camera.getViewport().top + camera.getViewport().height) - pObj.sprite.getPosition().y;;
-        playerDistanceCamera[3] = camera.getViewport().left - pObj.sprite.getPosition().x;
+        playerDistanceCamera[0] = camera.getCenter().y - (camera.getSize().y / 2) - pObj.sprite.getPosition().y;
+        playerDistanceCamera[1] = camera.getCenter().x + (camera.getSize().x / 2) - pObj.sprite.getPosition().x;
+        playerDistanceCamera[2] = camera.getCenter().y  + (camera.getSize().y / 2) - pObj.sprite.getPosition().y;
+        playerDistanceCamera[3] = camera.getCenter().x - pObj.sprite.getPosition().x;
 
-        std::cout << camera.getViewport().top << " - " << pObj.sprite.getPosition().y << " = " <<playerDistanceCamera[0] << std::endl;
-
-            if(playerDistanceCamera[0] >= -50)
+            if(playerDistanceCamera[0] >= -250)
             {
-                //cameraVel.y = -5;
+                cameraVel.y = -(pObj.vel.y * pObj.speed);
+            }
+            else if(playerDistanceCamera[2] <= 250)
+            {
+                cameraVel.y = -(pObj.vel.y * pObj.speed);
+            }
+            else if(!playerDistanceCamera[0] >= -250 &&
+                    !playerDistanceCamera[2] <= 250)
+            {
+                cameraVel.y = 0;
+            }
+            if(playerDistanceCamera[3] >= -250)
+            {
+                cameraVel.x = pObj.vel.x * pObj.speed;
+            }
+
+            if(playerDistanceCamera[1] <= 250)
+            {
+                cameraVel.x = pObj.vel.x * pObj.speed;
+            }
+            else if(!playerDistnaceCamera[3] >= -250 &&
+                    !playerDistanceCaemra[1] <= 250)
+            {
+                cameraVel.x = 0;
             }
 
 
@@ -437,7 +456,7 @@ int main()
             screenShake.y = screenShake.x;
 
 
-            screenShakeCounter+= 0.2;
+            screenShakeCounter+= 0.5;
 
             if(screenShakeCounter > 9)
             {
