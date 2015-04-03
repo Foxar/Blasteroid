@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
+	<File name="include\player.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="500" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\asteroid.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="40" topLine="0" />
+		</Cursor>
+	</File>
 	<File name="include\bullet.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="157" topLine="0" />
@@ -48,59 +58,12 @@
 	</File>
 	<File name="main.cpp" open="1" top="1" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="413" topLine="0" />
+			<Cursor1 position="13944" topLine="332" />
 		</Cursor>
-		<Folding>
-			<Collapse line="112" />
-			<Collapse line="132" />
-			<Collapse line="136" />
-			<Collapse line="142" />
-			<Collapse line="144" />
-			<Collapse line="151" />
-			<Collapse line="161" />
-			<Collapse line="164" />
-			<Collapse line="169" />
-			<Collapse line="174" />
-			<Collapse line="185" />
-			<Collapse line="187" />
-			<Collapse line="191" />
-			<Collapse line="197" />
-			<Collapse line="202" />
-			<Collapse line="204" />
-			<Collapse line="206" />
-			<Collapse line="215" />
-			<Collapse line="219" />
-			<Collapse line="229" />
-			<Collapse line="237" />
-			<Collapse line="239" />
-			<Collapse line="242" />
-			<Collapse line="261" />
-			<Collapse line="270" />
-			<Collapse line="293" />
-			<Collapse line="318" />
-			<Collapse line="323" />
-			<Collapse line="457" />
-			<Collapse line="462" />
-			<Collapse line="475" />
-			<Collapse line="490" />
-			<Collapse line="497" />
-			<Collapse line="503" />
-			<Collapse line="510" />
-		</Folding>
 	</File>
 	<File name="src\bullet.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="566" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\player.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="500" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\asteroid.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="40" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

@@ -21,7 +21,7 @@
 //DIFFERENT ATTACKS
 //RANDOM ASTEROIDS
 //
-//
+//FIX CAMERAS AGAIN
 //
 //MORE COMMENTS
 //
@@ -43,6 +43,9 @@ bool LMB = false;
 sf::RenderWindow app;
 sf::View camera;
 
+int RES_WIDTH = 1024;
+int RES_HEIGHT = 768;
+
 
 int counter = 0;
 int timeSinceStart = 0;
@@ -54,8 +57,8 @@ sf::Vector2f cameraVel;
 int main()
 {
     //WINDOW CREATION
-    sf::RenderWindow app(sf::VideoMode(800, 600, 32), "Blasteroid");
-    camera.reset(sf::FloatRect(0, 0, 640, 480));
+    sf::RenderWindow app(sf::VideoMode(RES_WIDTH, RES_HEIGHT, 32), "Blasteroid");
+    camera.reset(sf::FloatRect(0, 0, RES_WIDTH, RES_HEIGHT));
     app.setVerticalSyncEnabled(true);
     app.setView(camera);
     screenShake.x = 0;
@@ -164,11 +167,6 @@ int main()
             {
                 app.close();
             }
-            //ROTATING
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Right))
-            {
-                pObj.sprite.setRotation(getAngle(mouseCamera.x - pObj.sprite.getPosition().x, mouseCamera.y - pObj.sprite.getPosition().y) + 90);
-            }
             //SHOOTING
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left) && !LMB)
             {
@@ -178,6 +176,7 @@ int main()
                 LMB = true;
 
             }
+
         }
 
         //ANIMATIONS
@@ -231,6 +230,8 @@ int main()
             if(astList[i].immoTime < 0)
                 astList[i].immoTime = 0;
         }
+        //PREMAMENT LOCK ON MOUSE
+        pObj.sprite.setRotation(getAngle(mouseCamera.x - pObj.sprite.getPosition().x, mouseCamera.y - pObj.sprite.getPosition().y) + 90);
 
         //COLLISION DETECTION
         for(int i = 0; i < bulletList.size(); i++)
@@ -358,14 +359,16 @@ int main()
         int playerDistanceCamera[4];
         playerDistanceCamera[0] = camera.getCenter().y - (camera.getSize().y / 2) - pObj.sprite.getPosition().y;
         playerDistanceCamera[1] = camera.getCenter().x + (camera.getSize().x / 2) - pObj.sprite.getPosition().x;
-        playerDistanceCamera[2] = camera.getCenter().y  + (camera.getSize().y / 2) - pObj.sprite.getPosition().y;
-        playerDistanceCamera[3] = camera.getCenter().x - pObj.sprite.getPosition().x;
+        playerDistanceCamera[2] = camera.getCenter().y + (camera.getSize().y / 2) - pObj.sprite.getPosition().y;
+        playerDistanceCamera[3] = camera.getCenter().x - (camera.getSize().x / 2) - pObj.sprite.getPosition().x;
 
-            if(playerDistanceCamera[0] >= -250)
+            if(playerDistanceCamera[0] >= -camera.getSize().y/3 &&
+               pObj.vel.y > 0)
             {
                 cameraVel.y = -(pObj.vel.y * pObj.speed);
             }
-            else if(playerDistanceCamera[2] <= 250)
+            else if(playerDistanceCamera[2] <= camera.getSize().y/3 &&
+                    pObj.vel.y < 0)
             {
                 cameraVel.y = -(pObj.vel.y * pObj.speed);
             }
@@ -374,20 +377,23 @@ int main()
             {
                 cameraVel.y = 0;
             }
-            if(playerDistanceCamera[3] >= -250)
-            {
-                cameraVel.x = pObj.vel.x * pObj.speed;
-            }
 
-            if(playerDistanceCamera[1] <= 250)
+            if(playerDistanceCamera[3] >= -camera.getSize().y/3 &&
+               pObj.vel.x < 0)
             {
-                cameraVel.x = pObj.vel.x * pObj.speed;
+                cameraVel.x = (pObj.vel.x * pObj.speed);
             }
-            else if(!playerDistnaceCamera[3] >= -250 &&
-                    !playerDistanceCaemra[1] <= 250)
+            else if(playerDistanceCamera[1] <= camera.getSize().y/3 &&
+                    pObj.vel.x > 0)
+            {
+                cameraVel.x = (pObj.vel.x * pObj.speed);
+            }
+            else if(!playerDistanceCamera[3] >= -250 &&
+                    !playerDistanceCamera[1] <= 250)
             {
                 cameraVel.x = 0;
             }
+
 
 
         //SLOWDOWN
@@ -405,10 +411,10 @@ int main()
         //GARBAGE COLLECTION
         for(int i = 0; i < bulletList.size(); i++)
         {
-            if(bulletList[i].sprite.getPosition().x > 800 ||
-               bulletList[i].sprite.getPosition().x < 0 ||
-               bulletList[i].sprite.getPosition().y > 600 ||
-               bulletList[i].sprite.getPosition().y < 0)
+            if(bulletList[i].sprite.getPosition().x > camera.getCenter().x + (camera.getSize().x/2) ||
+               bulletList[i].sprite.getPosition().x < camera.getCenter().x - (camera.getSize().x/2) ||
+               bulletList[i].sprite.getPosition().y > camera.getCenter().y + (camera.getSize().y/2) ||
+               bulletList[i].sprite.getPosition().y < camera.getCenter().y - (camera.getSize().y/2))
             {
                 bulletList.erase(bulletList.begin() + i);
             }
@@ -456,7 +462,7 @@ int main()
             screenShake.y = screenShake.x;
 
 
-            screenShakeCounter+= 0.5;
+            screenShakeCounter+= 0.3;
 
             if(screenShakeCounter > 9)
             {
