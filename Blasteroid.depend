@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1428085008 source:f:\programming (new)\projects\blasteroid\main.cpp
+1428326378 source:f:\programming (new)\projects\blasteroid\main.cpp
 	<SFML/Graphics.hpp>
 	"global.h"
 	"player.h"
@@ -27,10 +27,11 @@
 1427931001 f:\programming (new)\projects\blasteroid\include\rectcontroller.h
 	<SFML/Graphics.hpp>
 
-1427912556 source:f:\programming (new)\projects\blasteroid\src\asteroid.cpp
+1428148577 source:f:\programming (new)\projects\blasteroid\src\asteroid.cpp
 	"asteroid.h"
 	"rectController.h"
 	<random>
+	<chrono>
 
 1427915809 source:f:\programming (new)\projects\blasteroid\src\player.cpp
 	"player.h"

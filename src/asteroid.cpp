@@ -1,23 +1,34 @@
 #include "asteroid.h"
 #include "rectController.h"
 #include <random>
+#include <chrono>
 
 asteroid::asteroid(int Size, int x, int y, sf::Texture texture)
 {
+    unsigned seed1 = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine generator(seed1);
+    std::uniform_int_distribution<int> size1rect(0, 11);
+    std::uniform_int_distribution<int> size2rect(12, 17);
+    std::uniform_int_distribution<int> size3rect(18, 20);
+    std::uniform_int_distribution<int> size0rect(0, 5);
 
     switch(Size)
     {
     case 1:
-        this->rect = rand() % 12;
+        this->rect = size1rect(generator);
         this->Size = 1;
         break;
     case 2:
-        this->rect = rand() % 6 + 12;
+        this->rect = size2rect(generator);
         this->Size = 2;
         break;
     case 3:
-        this->rect = rand() % 3 + 18;
+        this->rect = size3rect(generator);
         this->Size = 3;
+        break;
+    case 0:
+        this->rect = size0rect(generator);
+        this->Size = 0;
         break;
     default:
         break;
@@ -47,6 +58,10 @@ asteroid::asteroid(int Size, int x, int y, sf::Texture texture, int rect)
     case 3:
         this->rect = rect;
         this->Size = 3;
+        break;
+    case 0:
+        this->rect = rect
+        this->Size = 0;
         break;
     default:
         break;

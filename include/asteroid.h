@@ -18,6 +18,7 @@ class asteroid
         bool dead;
         int immoTime;
         int rotSpeed;
+        bool isRare;
 };
 
 #endif // ASTEROID_H

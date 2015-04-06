@@ -4,6 +4,8 @@
 
 extern sf::IntRect astRects[21];
 
+extern sf::IntRect resRects[5];
+
 extern sf::IntRect shipRects[2]; //ENGINE
 
 extern sf::IntRect playerShipRects[2];

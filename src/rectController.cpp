@@ -19,12 +19,14 @@ void setRects()
     astRects[9] = sf::IntRect(179, 105, 17, 17);
     astRects[10] = sf::IntRect(4, 113, 15, 16);
     astRects[11] = sf::IntRect(214, 110, 10, 20);
+
     astRects[12] = sf::IntRect(228, 109, 12, 21);
     astRects[13] = sf::IntRect(11, 61, 32, 28);
     astRects[14] = sf::IntRect(52, 56, 22, 25);
     astRects[15] = sf::IntRect(84, 61, 32, 30);
     astRects[16] = sf::IntRect(120, 62, 21, 26);
     astRects[17] = sf::IntRect(160, 70, 40, 34);
+
     astRects[18] = sf::IntRect(17, 2, 69, 45);
     astRects[19] = sf::IntRect(98, 2, 54, 47);
     astRects[20] = sf::IntRect(174, 6, 71, 52);
@@ -58,6 +60,12 @@ void setRects()
     partRect[3][0] = sf::IntRect(300, 0, 100, 100);
     partRect[4][0] = sf::IntRect(400, 0, 100, 100);
     partRect[5][0] = sf::IntRect(500, 0, 100, 100);
+
+    resRects[0] = sf::IntRect(32, 124, 7, 11);
+    resRects[1] = sf::IntRect(52, 126, 7, 8);
+    resRects[2] = sf::IntRect(67, 124, 7, 10);
+    resRects[3] = sf::IntRect(46, 136, 6, 7);
+    resRects[4] = sf::IntRect(60, 138, 9, 6);
 
 
 

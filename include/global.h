@@ -20,6 +20,8 @@
 
  sf::IntRect partRect[6][1];
 
+ sf::IntRect resRects[5];
+
 std::vector<bullet>bulletList;
 std::vector<particles>partList;
 std::vector<asteroid>astList;

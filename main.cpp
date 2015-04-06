@@ -17,15 +17,13 @@
 //
 //
 //ADD MENUS
-//DIFFERENT SHIPS
-//DIFFERENT ATTACKS
 //RANDOM ASTEROIDS
 //
-//FIX CAMERAS AGAIN
 //
 //MORE COMMENTS
 //
-//MAKE CAMERA MOVE WHEN SHIP APPROACHES BORDER OF THE SCREEN
+//RESOURCES TO COLLECT
+//
 
 
 
@@ -65,6 +63,8 @@ int main()
     screenShake.y = 0;
     cameraVel.x = 0;
     cameraVel.y = 0;
+    bool camXallowed = true;
+    bool camYallowed = true;
     //FRAMERATE CAP
     app.setFramerateLimit(60);
     //RAND SEED
@@ -81,6 +81,15 @@ int main()
     sf::Texture partTex;
     partTex.loadFromFile("Assets/particles.png");
     partTex.setSmooth(true);
+
+    sf::Texture backTex;
+    backTex.loadFromFile("Assets/background.png");
+    backTex.setSmooth(true);
+
+    sf::Sprite backSprite;
+    backSprite.setTexture(backTex);
+    backSprite.setOrigin(backSprite.getLocalBounds().width/2, backSprite.getLocalBounds().height/2);
+    backSprite.setPosition(0, 0);
 
     //CREATE OBJECTS
     player pObj(100, 250, 250, spreadtex);
@@ -176,6 +185,12 @@ int main()
                 LMB = true;
 
             }
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Right))
+            {
+                asteroid newAsteroid(3, mouseCamera.x, mouseCamera.y, spreadtex);
+                newAsteroid.speed = 0;
+                astList.push_back(newAsteroid);
+            }
 
         }
 
@@ -254,9 +269,17 @@ int main()
                     std::uniform_int_distribution<int> rotDist(0, 360);             //RANDOM ROTATION DIST.
                     std::uniform_real_distribution<float> rotSpdDist(0.0, 5.0);     //RANDOM ROTATION SPEED DIST.
 
+
+                    std::uniform_int_distribution<int> rectDistMins(1, 5);          //RANDOM MINERALS RECT DIST.
                     std::uniform_int_distribution<int> rectDist1(0, 12);            //RANDOM SIZE1 RECT DIST.
                     std::uniform_int_distribution<int> rectDist2(13, 18);           //RANDOM SIZE2 RECT DIST.
                     std::uniform_int_distribution<int> rectDist3(19, 20);           //RANDOM SIZE3 RECT DIST.
+
+                    std::uniform_int_distribution<int> mineralChanceSize2(1, 10); //10% CHANCE FOR MINERALS TO FALL OUT OF SIZE2
+                    std::uniform_int_distribution<int> mineralChanceSize1(1, 4); //40% CHANCE FOR MINERALS TO FALL OUT OF SIZE1
+
+                    int chance = 0;
+
 
                     if(astList[n].Size == 3)
                     {
@@ -265,6 +288,7 @@ int main()
 
                         asteroid astToAdd1(1, nPosX, nPosY, spreadtex); // FEW TEMPLATE ASTEROIDS
                         asteroid astToAdd2(2, nPosX, nPosY, spreadtex);
+                        asteroid astToAdd0(0, nPosX, nPosY, spreadtex);
 
 
                         for(int i = 0; i < 2; i++)
@@ -290,7 +314,7 @@ int main()
                             //ADDED TO LIST
                             astList.push_back(astToAdd2);
                         }
-                        for(int i = 0; i < 3; i++)                          //CHECK THE LOOP ABOVE FOR REFERENCE
+                        for(int i = 0; i < 3; i++)                          //CHECK THE LOOP ABOVE FOR COMMENTS
                         {
                             astToAdd1.immoTime = 60;
                             int rectToUse = rectDist1(generator);
@@ -312,6 +336,15 @@ int main()
                             astList.push_back(astToAdd1);
                         }
 
+                        chance = mineralChanceSize2(generator);
+                        if(chance == 1)
+                        {
+                            astToAdd0.immoTime = 60;
+                            int rectToUse =
+                            asteroid asteroidToAdd0(0, nPosX, nPosy, spreadtex, rectToUse);
+
+                        }
+
 
                     }
 
@@ -320,7 +353,7 @@ int main()
 
                         asteroid astToAdd(1, nPosX, nPosY, spreadtex);
 
-                        for(int i = 0; i < 3; i++)                          //CHECK THE LOOP ABOVE FOR REFERENCE
+                        for(int i = 0; i < 3; i++)                          //CHECK THE LOOP ABOVE FOR COMMENTS
                         {
                             astToAdd.immoTime = 60;
                             int rectToUse = rectDist1(generator);
@@ -341,6 +374,8 @@ int main()
 
                             astList.push_back(astToAdd);
                         }
+
+
                     }
 
                     astList.erase(astList.begin() + n);
@@ -356,6 +391,8 @@ int main()
             }
         }
 
+
+        //CAMERA MOVEMENT
         int playerDistanceCamera[4];
         playerDistanceCamera[0] = camera.getCenter().y - (camera.getSize().y / 2) - pObj.sprite.getPosition().y;
         playerDistanceCamera[1] = camera.getCenter().x + (camera.getSize().x / 2) - pObj.sprite.getPosition().x;
@@ -439,7 +476,9 @@ int main()
             astList[i].sprite.move(astList[i].speed * astList[i].vel.x, astList[i].speed * astList[i].vel.y);
             astList[i].sprite.rotate(astList[i].rotSpeed);
         }
+
         //DISPLAY
+        app.draw(backSprite);
         for(int i = 0; i < bulletList.size(); i++)
         {
             bulletList[i].sprite.setTexture(spreadtex);
@@ -471,7 +510,16 @@ int main()
                 screenShakeCounter = 0;
             }
         }
-        camera.move(screenShake.x + cameraVel.x, screenShake.y + cameraVel.y);
+
+        //HOLD CAMERA
+        if(camera.getCenter().x + (camera.getViewport().width / 2) + 20 >= backSprite.getPosition().x + (backSprite.getLocalBounds().width/2) ||
+           camera.getCenter().x - (camera.getViewport().width / 2) - 20 <= backSprite.getPosition().x - (backSprite.getLocalBounds().width/2))
+        {
+            //camXallowed = false;
+        }
+        camera.move((screenShake.x + cameraVel.x) * camXallowed, (screenShake.y + cameraVel.y) * camYallowed);
+        //PLAYER RELATIVELY TO THE BACKGROUND MOVES SLOWER
+        backSprite.move((screenShake.x + cameraVel.x) * camXallowed, (screenShake.y + cameraVel.y) * camYallowed);
         app.display();
         app.clear(sf::Color::Black);
 
