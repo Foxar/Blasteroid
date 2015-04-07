@@ -19,6 +19,8 @@ class player
         int muzzleFrame;
         bool isAccelerating;
         bool shootingLeft;
+        int invuTime;
+        int points;
 };
 
 #endif // PLAYER_H

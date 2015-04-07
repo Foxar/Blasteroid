@@ -11,6 +11,7 @@
 #include <time.h>
 #include <random>
 #include <chrono>
+#include <sstream>
 
 //TO DO
 //
@@ -26,9 +27,6 @@
 //
 
 
-
-void gamePlay();
-void menu();
 void setRects();
 
 int getAngle(double mX, double mY);
@@ -49,6 +47,10 @@ int counter = 0;
 int timeSinceStart = 0;
 sf::Vector2f screenShake;
 float screenShakeCounter = 0;
+
+bool size3inView = true;
+
+sf::Text lifeText, pointsText;
 
 sf::Vector2f cameraVel;
 
@@ -73,6 +75,10 @@ int main()
     //RECTANGLES SETTING
     setRects();
 
+    sf::Font font;
+    font.loadFromFile("Assets/font.ttf");
+
+
     //TEXTURE LOADING
     sf::Texture spreadtex;
     spreadtex.loadFromFile("Assets/spreadsheet.png");
@@ -94,6 +100,7 @@ int main()
     //CREATE OBJECTS
     player pObj(100, 250, 250, spreadtex);
     asteroid aster(3, 400, 300, spreadtex);
+
     aster.speed = 0;
 
     //SEED FOR RANDOM GENERATION
@@ -101,15 +108,52 @@ int main()
     //RANDOM VALUE TO MOVE CAMERA BY TO SIMULATE SHAKE GENERATOR
     std::default_random_engine shakeGenerator(shakeSeed);
     std::uniform_int_distribution<int> shakeDist(1, 20);
+    std::uniform_int_distribution<int> widthDist(0, RES_WIDTH);
+    std::uniform_int_distribution<int> heightDist(0, RES_HEIGHT);
+
 
     astList.push_back(aster);
+
+    for(int i = 0; i < 10; i++)
+    {
+        asteroid astToAdd1(3, widthDist(shakeGenerator), heightDist(shakeGenerator), spreadtex);
+        astList.push_back(astToAdd1);
+    }
+    for(int i = 0; i < 20; i++)
+    {
+        asteroid astToAdd2(2, widthDist(shakeGenerator), heightDist(shakeGenerator), spreadtex);
+        astList.push_back(astToAdd2);
+    }
 
     while(app.isOpen())
     {
             //UPDATE THE VIEWPORT OF THE WINDOW TO THE CAMERA
             app.setView(camera);
-            //RESET CAMERA SPEED
 
+            size3inView = false;
+
+
+
+            lifeText.setFont(font);
+            std::ostringstream ss;
+            ss << pObj.health;
+            lifeText.setString(ss.str());
+            lifeText.setCharacterSize(25);
+            lifeText.setColor(sf::Color::Red);
+            lifeText.setStyle(sf::Text::Regular);
+
+            pointsText.setFont(font);
+            std::ostringstream ss1;
+            ss1 << pObj.points;
+            pointsText.setString(ss1.str());
+            pointsText.setCharacterSize(25);
+            pointsText.setColor(sf::Color::Green);
+            pointsText.setStyle(sf::Text::Regular);
+
+
+
+            lifeText.setPosition(pObj.sprite.getPosition().x, pObj.sprite.getPosition().y - 10);
+            pointsText.setPosition(0, 0);
 
             //RESET POBJ MEMBERS
             pObj.accel = 0;
@@ -118,6 +162,8 @@ int main()
             pObj.sprite.setOrigin(pObj.sprite.getTextureRect().width/2, pObj.sprite.getTextureRect().height/2);
             pObj.vel.x = getMovement(pObj.sprite.getRotation()).x;
             pObj.vel.y = getMovement(pObj.sprite.getRotation()).y;
+            if(pObj.invuTime > 0)
+                pObj.invuTime--;
             if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Space) &&
                pObj.speed > -1 &&
                pObj.speed < 1)
@@ -427,6 +473,59 @@ int main()
         }
 
 
+        for(int i = 0; i < astList.size(); i++)
+        {
+            if(astList[i].sprite.getGlobalBounds().intersects(pObj.sprite.getGlobalBounds()) ||
+               camera.getViewport().contains(astList[i].sprite.getPosition().x, astList[i].sprite.getPosition().y))
+            {
+                int iPosX = astList[i].sprite.getPosition().x;
+                int iPosY = astList[i].sprite.getPosition().y;
+
+                switch(astList[i].Size)
+                {
+                case 0:
+                    pObj.points+= 10;
+                    break;
+                case 1:
+                    pObj.health -= 10;
+                    break;
+                case 2:
+                    pObj.health -= 25;
+                    break;
+                case 3:
+                    pObj.health -= 50;
+                    break;
+                default:
+                    break;
+                }
+
+                astList.erase((astList.begin() + i));
+
+                if(astList[i].Size !=  0 || pObj.invuTime <= 0)
+                {
+                    particles particleToAdd(iPosX, iPosY, 0, 0, 0, partTex);
+                    particleToAdd.setAnim("astExplode");
+
+                    screenShakeCounter = 1;
+
+                    partList.push_back(particleToAdd);
+
+                }
+
+            }
+
+                if(astList[i].Size == 3)
+                {
+                     if(astList[i].sprite.getPosition().x < camera.getCenter().x + (camera.getSize().x/2) &&
+                        astList[i].sprite.getPosition().x > camera.getCenter().x - (camera.getSize().x/2) &&
+                        astList[i].sprite.getPosition().y < camera.getCenter().y + (camera.getSize().y/2) &&
+                        astList[i].sprite.getPosition().y > camera.getCenter().y - (camera.getSize().y/2))
+                    {
+                        size3inView = true;
+                    }
+                }
+        }
+
         //CAMERA MOVEMENT
         int playerDistanceCamera[4];
         playerDistanceCamera[0] = camera.getCenter().y - (camera.getSize().y / 2) - pObj.sprite.getPosition().y;
@@ -434,39 +533,49 @@ int main()
         playerDistanceCamera[2] = camera.getCenter().y + (camera.getSize().y / 2) - pObj.sprite.getPosition().y;
         playerDistanceCamera[3] = camera.getCenter().x - (camera.getSize().x / 2) - pObj.sprite.getPosition().x;
 
-            if(playerDistanceCamera[0] >= -camera.getSize().y/3 &&
+            if(playerDistanceCamera[0] >= -camera.getSize().y/10 &&
                pObj.vel.y > 0)
             {
-                cameraVel.y = -(pObj.vel.y * pObj.speed);
+                pObj.vel.y = 0;
             }
-            else if(playerDistanceCamera[2] <= camera.getSize().y/3 &&
+            else if(playerDistanceCamera[2] <= camera.getSize().y/10 &&
                     pObj.vel.y < 0)
             {
-                cameraVel.y = -(pObj.vel.y * pObj.speed);
-            }
-            else if(!playerDistanceCamera[0] >= -250 &&
-                    !playerDistanceCamera[2] <= 250)
-            {
-                cameraVel.y = 0;
+                pObj.vel.y = 0;
             }
 
-            if(playerDistanceCamera[3] >= -camera.getSize().y/3 &&
+            if(playerDistanceCamera[3] >= -camera.getSize().y/10 &&
                pObj.vel.x < 0)
             {
-                cameraVel.x = (pObj.vel.x * pObj.speed);
+                pObj.vel.x = 0;
             }
-            else if(playerDistanceCamera[1] <= camera.getSize().y/3 &&
+            else if(playerDistanceCamera[1] <= camera.getSize().y/10 &&
                     pObj.vel.x > 0)
             {
-                cameraVel.x = (pObj.vel.x * pObj.speed);
+                pObj.vel.x = 0;
             }
-            else if(!playerDistanceCamera[3] >= -250 &&
-                    !playerDistanceCamera[1] <= 250)
+
+
+        //MORE ASTEROIDS
+        if(!size3inView)
+        {
+            for(int i = 0; i < 1; i++)
             {
-                cameraVel.x = 0;
+                unsigned seed1 = std::chrono::system_clock::now().time_since_epoch().count();
+                std::default_random_engine generator(seed1);
+                std::uniform_real_distribution<float> velYDist(0, 0.5);
+                std::uniform_int_distribution<int> rotDist(0, 360);             //RANDOM ROTATION DIST.
+                std::uniform_real_distribution<float> rotSpdDist(0.0, 5.0);     //RANDOM ROTATION SPEED DIST.
+
+                asteroid astToAdd(3, -50, heightDist(shakeGenerator), spreadtex);
+                astToAdd.vel.y = velYDist(shakeGenerator);
+                astToAdd.vel.x = 1;
+                astToAdd.speed = 2;
+                astToAdd.rotSpeed = rotSpdDist(generator);
+
+                astList.push_back(astToAdd);
             }
-
-
+        }
 
         //SLOWDOWN
         if((mouseCamera.x - pObj.sprite.getPosition().x <= 50 && mouseCamera.x - pObj.sprite.getPosition().x >= - 50) &&
@@ -489,6 +598,15 @@ int main()
                bulletList[i].sprite.getPosition().y < camera.getCenter().y - (camera.getSize().y/2))
             {
                 bulletList.erase(bulletList.begin() + i);
+            }
+        }
+
+        for(int i = 0; i < astList.size(); i++)
+        {
+            if(camera.getViewport().contains(astList[i].sprite.getPosition()))
+            {
+                astList.erase(astList.begin() + i);
+                std::cout << "ERASED" << std::endl;
             }
         }
 
@@ -547,32 +665,32 @@ int main()
         }
 
         //HOLD CAMERA
-        if(camera.getCenter().x + (camera.getViewport().width / 2) + 20 >= backSprite.getPosition().x + (backSprite.getLocalBounds().width/2) ||
-           camera.getCenter().x - (camera.getViewport().width / 2) - 20 <= backSprite.getPosition().x - (backSprite.getLocalBounds().width/2))
-        {
+        //if(camera.getCenter().x + (camera.getViewport().width / 2) + 20 >= backSprite.getPosition().x + (backSprite.getLocalBounds().width/2) ||
+           //camera.getCenter().x - (camera.getViewport().width / 2) - 20 <= backSprite.getPosition().x - (backSprite.getLocalBounds().width/2))
+        //{
             //camXallowed = false;
-        }
-        camera.move((screenShake.x + cameraVel.x) * camXallowed, (screenShake.y + cameraVel.y) * camYallowed);
+       // }
+       // camera.move((screenShake.x + cameraVel.x) * camXallowed, (screenShake.y + cameraVel.y) * camYallowed);
         //PLAYER RELATIVELY TO THE BACKGROUND MOVES SLOWER
         backSprite.move((screenShake.x + cameraVel.x) * camXallowed, (screenShake.y + cameraVel.y) * camYallowed);
+        app.draw(pointsText);
+        if(pObj.health <= 0)
+        {
+            lifeText.setString("DEFEAT");
+            app.draw(lifeText);
+            app.display();
+            Sleep(2500);
+            app.close();
+        }
+        else
+            app.draw(lifeText);
         app.display();
+
+
         app.clear(sf::Color::Black);
 
     }
     return 0;
-}
-
-void menu()
-{
-
-
-    return;
-}
-
-void gamePlay()
-{
-
-    return;
 }
 
 int getAngle(double mX, double mY)

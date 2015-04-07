@@ -24,6 +24,8 @@ player::player(int hp, int x, int y, sf::Texture texture)
     this->speed = 0;
     this->isAccelerating = false;
     this->shootingLeft = false;
+    this->invuTime = 60;
+    this->points = 0;
 }
 
 void player::shoot(sf::Texture texture, int angle)

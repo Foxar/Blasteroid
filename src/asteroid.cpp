@@ -80,5 +80,4 @@ asteroid::asteroid(int Size, int x, int y, sf::Texture texture, int rect)
     this->rotSpeed = 0;
     this->sprite.setOrigin(this->sprite.getLocalBounds().width/2, this->sprite.getLocalBounds().height/2);
 
-    std::cout << "ASTEROID SIZE: " << Size  << " ASTRECT: " << this->rect << std::endl;
 }
