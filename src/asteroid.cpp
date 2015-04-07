@@ -2,6 +2,7 @@
 #include "rectController.h"
 #include <random>
 #include <chrono>
+#include <iostream>
 
 asteroid::asteroid(int Size, int x, int y, sf::Texture texture)
 {
@@ -37,6 +38,8 @@ asteroid::asteroid(int Size, int x, int y, sf::Texture texture)
     this->tex = texture;
     this->sprite.setTexture(this->tex);
     this->sprite.setTextureRect(astRects[this->rect]);
+    if(this->Size == 0)
+        this->sprite.setTextureRect(resRects[this->rect]);
     this->sprite.setPosition(x, y);
     this->immoTime = 60;
     this->rotSpeed = 0;
@@ -60,7 +63,7 @@ asteroid::asteroid(int Size, int x, int y, sf::Texture texture, int rect)
         this->Size = 3;
         break;
     case 0:
-        this->rect = rect
+        this->rect = rect;
         this->Size = 0;
         break;
     default:
@@ -70,8 +73,12 @@ asteroid::asteroid(int Size, int x, int y, sf::Texture texture, int rect)
     this->tex = texture;
     this->sprite.setTexture(this->tex);
     this->sprite.setTextureRect(astRects[this->rect]);
+    if(this->Size == 0)
+        this->sprite.setTextureRect(resRects[this->rect]);
     this->sprite.setPosition(x, y);
     this->immoTime = 60;
     this->rotSpeed = 0;
     this->sprite.setOrigin(this->sprite.getLocalBounds().width/2, this->sprite.getLocalBounds().height/2);
+
+    std::cout << "ASTEROID SIZE: " << Size  << " ASTRECT: " << this->rect << std::endl;
 }

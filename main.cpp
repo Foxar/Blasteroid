@@ -270,13 +270,13 @@ int main()
                     std::uniform_real_distribution<float> rotSpdDist(0.0, 5.0);     //RANDOM ROTATION SPEED DIST.
 
 
-                    std::uniform_int_distribution<int> rectDistMins(1, 5);          //RANDOM MINERALS RECT DIST.
-                    std::uniform_int_distribution<int> rectDist1(0, 12);            //RANDOM SIZE1 RECT DIST.
-                    std::uniform_int_distribution<int> rectDist2(13, 18);           //RANDOM SIZE2 RECT DIST.
-                    std::uniform_int_distribution<int> rectDist3(19, 20);           //RANDOM SIZE3 RECT DIST.
+                    std::uniform_int_distribution<int> rectDistMins(0, 4);          //RANDOM MINERALS RECT DIST.
+                    std::uniform_int_distribution<int> rectDist1(0, 11);            //RANDOM SIZE1 RECT DIST.
+                    std::uniform_int_distribution<int> rectDist2(12, 17);           //RANDOM SIZE2 RECT DIST.
+                    std::uniform_int_distribution<int> rectDist3(18, 20);           //RANDOM SIZE3 RECT DIST.
 
-                    std::uniform_int_distribution<int> mineralChanceSize2(1, 10); //10% CHANCE FOR MINERALS TO FALL OUT OF SIZE2
-                    std::uniform_int_distribution<int> mineralChanceSize1(1, 4); //40% CHANCE FOR MINERALS TO FALL OUT OF SIZE1
+                    std::uniform_int_distribution<int> mineralChanceSize2(1, 10);   //10% CHANCE FOR MINERALS TO FALL OUT OF SIZE2
+                    std::uniform_int_distribution<int> mineralChanceSize1(1, 4);    //40% CHANCE FOR MINERALS TO FALL OUT OF SIZE1
 
                     int chance = 0;
 
@@ -340,8 +340,19 @@ int main()
                         if(chance == 1)
                         {
                             astToAdd0.immoTime = 60;
-                            int rectToUse =
-                            asteroid asteroidToAdd0(0, nPosX, nPosy, spreadtex, rectToUse);
+                            int rectToUse = rectDistMins(generator);
+                            asteroid asteroidToAdd0(0, nPosX, nPosY, spreadtex, rectToUse);
+
+                            float rand1 = velDist(generator);
+                            rand1-= 10;
+                            float rand2 = velDist(generator);
+                            rand2-= 10;
+                            astToAdd0.vel.x = rand1;
+                            astToAdd0.vel.y = rand2;
+                            astToAdd0.speed = speedDist2(generator);
+                            astToAdd0.sprite.setRotation(rotSpdDist(generator));
+                            astToAdd0.rotSpeed = rotSpdDist(generator) - 2.5;
+                            astList.push_back(astToAdd0);
 
                         }
 
@@ -351,6 +362,7 @@ int main()
                     if(astList[n].Size == 2)
                     {
 
+                        asteroid astToAddM(0, nPosX, nPosY, spreadtex);
                         asteroid astToAdd(1, nPosX, nPosY, spreadtex);
 
                         for(int i = 0; i < 3; i++)                          //CHECK THE LOOP ABOVE FOR COMMENTS
@@ -373,6 +385,29 @@ int main()
                             astToAdd.rotSpeed = rotSpdDist(generator) - 2.5;
 
                             astList.push_back(astToAdd);
+                        }
+
+                        chance = mineralChanceSize2(generator);
+                        if(chance == 1)
+                        {
+                            astToAddM.immoTime = 60;
+                            int rectToUse = rectDistMins(generator);
+                            asteroid astToAddM(0, nPosX, nPosY, spreadtex, rectToUse);
+
+                            float rand1 = velDist(generator);
+                            rand1-= 10;
+                            float rand2 = velDist(generator);
+                            rand2-= 10;
+                            astToAddM.vel.x = rand1;
+                            astToAddM.vel.y = rand2;
+
+                            astToAddM.speed = speedDist2(generator);
+
+                            astToAddM.sprite.setRotation(rotDist(generator));
+
+                            astToAddM.rotSpeed = rotSpdDist(generator) - 2.5;
+
+                            astList.push_back(astToAddM);
                         }
 
 
